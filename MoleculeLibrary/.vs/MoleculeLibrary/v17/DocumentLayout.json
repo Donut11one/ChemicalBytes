@@ -1,0 +1,120 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Winter 2025\\App in\\Project\\MoleculeLibrary\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3A0992A0-4DCA-4FB5-A8D1-B178D5B0E9F5}|MoleculeLibrary.csproj|c:\\winter 2025\\app in\\project\\moleculelibrary\\smilesgenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3A0992A0-4DCA-4FB5-A8D1-B178D5B0E9F5}|MoleculeLibrary.csproj|solutionrelative:smilesgenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alexh\\source\\repos\\MoleculeTest\\SMILESGenTest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3A0992A0-4DCA-4FB5-A8D1-B178D5B0E9F5}|MoleculeLibrary.csproj|c:\\winter 2025\\app in\\project\\moleculelibrary\\molecule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3A0992A0-4DCA-4FB5-A8D1-B178D5B0E9F5}|MoleculeLibrary.csproj|solutionrelative:molecule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alexh\\source\\repos\\MoleculeTest\\PubChemAPITest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\alexh\\source\\repos\\MoleculeTest\\Test1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 310,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PubChemAPITest.cs",
+              "DocumentMoniker": "C:\\Users\\alexh\\source\\repos\\MoleculeTest\\PubChemAPITest.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\Users\\alexh\\source\\repos\\MoleculeTest\\PubChemAPITest.cs",
+              "ToolTip": "C:\\Users\\alexh\\source\\repos\\MoleculeTest\\PubChemAPITest.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\Users\\alexh\\source\\repos\\MoleculeTest\\PubChemAPITest.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABEAAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-20T06:54:13.69Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SMILESGenerator.cs",
+              "DocumentMoniker": "C:\\Winter 2025\\App in\\Project\\MoleculeLibrary\\SMILESGenerator.cs",
+              "RelativeDocumentMoniker": "SMILESGenerator.cs",
+              "ToolTip": "C:\\Winter 2025\\App in\\Project\\MoleculeLibrary\\SMILESGenerator.cs",
+              "RelativeToolTip": "SMILESGenerator.cs",
+              "ViewState": "AgIAAAYAAAAAMzMzM7MSwBQAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-20T07:02:15.201Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SMILESGenTest.cs",
+              "DocumentMoniker": "C:\\Users\\alexh\\source\\repos\\MoleculeTest\\SMILESGenTest.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\Users\\alexh\\source\\repos\\MoleculeTest\\SMILESGenTest.cs",
+              "ToolTip": "C:\\Users\\alexh\\source\\repos\\MoleculeTest\\SMILESGenTest.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\Users\\alexh\\source\\repos\\MoleculeTest\\SMILESGenTest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-20T07:02:13.427Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Test1.cs",
+              "DocumentMoniker": "C:\\Users\\alexh\\source\\repos\\MoleculeTest\\Test1.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\Users\\alexh\\source\\repos\\MoleculeTest\\Test1.cs",
+              "ToolTip": "C:\\Users\\alexh\\source\\repos\\MoleculeTest\\Test1.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\Users\\alexh\\source\\repos\\MoleculeTest\\Test1.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAADEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-20T06:49:58.763Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Molecule.cs",
+              "DocumentMoniker": "C:\\Winter 2025\\App in\\Project\\MoleculeLibrary\\Molecule.cs",
+              "RelativeDocumentMoniker": "Molecule.cs",
+              "ToolTip": "C:\\Winter 2025\\App in\\Project\\MoleculeLibrary\\Molecule.cs",
+              "RelativeToolTip": "Molecule.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAwwC0AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-20T06:44:36.585Z"
+            }
+          ]
+        },
+        {
+          "DockedHeight": 90,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

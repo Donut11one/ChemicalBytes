@@ -33,12 +33,12 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-        readyToJump = true;
+        ResetJump();
     }
 
     private void FixedUpdate()
     {
-        MovePlayer();        
+        MovePlayer();
     }
     private void Update()
     {
@@ -81,11 +81,17 @@ public class PlayerMovement : MonoBehaviour
 
         // this adds force to the player body on ground
         if (isGrounded)
+        {
             rb.AddForce(movementDirection.normalized * movementSpeed * 10f, ForceMode.Force);
+            
+        }
 
         // if in air, add force with air multiplier
         else if (!isGrounded)
-            rb.AddForce(movementDirection.normalized * movementSpeed * 10f * airMultiplier, ForceMode.Force);
+        {
+            rb.AddForce(movementDirection.normalized * movementSpeed * airMultiplier, ForceMode.Force);
+
+        }
     }
 
     private void SpeedControl()
@@ -106,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
         // make sure y velocity is 0
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse); // Use forcemode.impulse b/c permitting 1 jump at a time
+        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse); // Use forcemode.impulse b/c permitting 1 force at a time
 
 
     }

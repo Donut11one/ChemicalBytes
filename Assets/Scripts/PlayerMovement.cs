@@ -7,12 +7,15 @@ public class PlayerMovement : MonoBehaviour
     public float walkSpeed;
     public float sprintSpeed;
 
-    public float groundDrag;
+    public float groundDrag = 7;
 
     [Header("Jumping")]
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
+    public float fallMultiplier;
+    public float ascendingMultiplier;
+
     bool readyToJump;
 
     [Header("Crouching")]
@@ -59,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         MovePlayer();
+        ApplyJumpGravity();
     }
     private void Update()
     {
@@ -143,18 +147,24 @@ public class PlayerMovement : MonoBehaviour
         // This ensures you always move in the direction you are facing
         movementDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-        // this adds force to the player body on ground
+        // this applies movement to the player body
         if (isGrounded)
         {
             rb.AddForce(movementDirection.normalized * movementSpeed * 10f, ForceMode.Force);
             
         }
 
-        // if in air, add force with air multiplier
+        //// if in air, add force with air multiplier
         else if (!isGrounded)
         {
             rb.AddForce(movementDirection.normalized * movementSpeed * airMultiplier, ForceMode.Force);
 
+        }
+
+        // if player is grounded and not moving, stop them from sliding
+        if (movementSpeed == 0 && horizontalInput == 0)
+        {
+            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
         }
     }
 
@@ -184,5 +194,18 @@ public class PlayerMovement : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
+    }
+
+    private void ApplyJumpGravity()
+    {
+        // Fall: apply our fall multiplier with unity's built in gravity
+        if (rb.linearVelocity.y <0)
+        {
+            rb.linearVelocity += Vector3.up * Physics.gravity.y * fallMultiplier * Time.fixedDeltaTime;
+        }
+        else if (rb.linearVelocity.y > 0)
+        {
+            rb.linearVelocity += Vector3.up * Physics.gravity.y * ascendingMultiplier * Time.fixedDeltaTime;
+        }
     }
 }

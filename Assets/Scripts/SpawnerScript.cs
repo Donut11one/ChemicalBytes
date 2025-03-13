@@ -13,7 +13,7 @@ public class SpawnerScript : MonoBehaviour
     {
         // Create a preview sphere at the start
         previewSphere = Instantiate(spherePrefab);
-        previewSphere.GetComponent<Renderer>().material.color = new Color(1, 1, 1, 0.3f); // Transparent white
+        previewSphere.GetComponent<Renderer>().material.color = new Color(1, 1, 1, 0.8f); // Transparent white
         previewSphere.GetComponent<Collider>().enabled = false; // Disable collisions
         Rigidbody rb = previewSphere.GetComponent<Rigidbody>();
         if (rb != null) rb.isKinematic = true; // Make sure it doesn't move
@@ -54,6 +54,9 @@ public class SpawnerScript : MonoBehaviour
         {
             sphereRenderer.material.color = color;
         }
+
+        // Assign the sphere to a specific layer to allow deletion
+        newSphere.layer = LayerMask.NameToLayer("Spheres");
     }
 
     void UpdatePreviewColor(Color color)
@@ -64,7 +67,7 @@ public class SpawnerScript : MonoBehaviour
             Renderer previewRenderer = previewSphere.GetComponent<Renderer>();
             if (previewRenderer != null)
             {
-                previewRenderer.material.color = new Color(color.r, color.g, color.b, 0.3f); // Set transparent color
+                previewRenderer.material.color = new Color(color.r, color.g, color.b, 0.8f); // Set transparent color
             }
         }
     }

@@ -468,6 +468,7 @@ GameObject:
   - component: {fileID: 58423518}
   - component: {fileID: 58423519}
   - component: {fileID: 58423520}
+  - component: {fileID: 58423521}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -535,7 +536,7 @@ MonoBehaviour:
   walkSpeed: 5
   sprintSpeed: 10
   groundDrag: 8
-  jumpForce: 10
+  jumpForce: 20
   jumpCooldown: 0.25
   airMultiplier: 0.4
   fallMultiplier: 2.5
@@ -551,6 +552,23 @@ MonoBehaviour:
     m_Bits: 1024
   orientation: {fileID: 570821420}
   state: 0
+--- !u!114 &58423521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58423515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8093c7fd2e7104689a5046feefa3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 1360266729}
+  sphereLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  deleteRange: 10
 --- !u!1 &93212777
 GameObject:
   m_ObjectHideFlags: 0
@@ -2336,7 +2354,7 @@ GameObject:
   m_Component:
   - component: {fileID: 791495978}
   - component: {fileID: 791495979}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}

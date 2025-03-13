@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MoleculeTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5df65a99546ee5ed275e7ad33d1650cf9ccbcaf3")]
 [assembly: System.Reflection.AssemblyProductAttribute("MoleculeTest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MoleculeTest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

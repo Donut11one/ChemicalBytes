@@ -8,23 +8,23 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Richa\\.nuget\\packages\\": {},
+    "C:\\Users\\alexh\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Richa\\source\\repos\\ChemicalBytes\\MoleculeLibrary\\MoleculeLibrary.csproj",
+      "projectUniqueName": "C:\\Users\\alexh\\source\\repos\\MoleculeLibrary\\MoleculeLibrary.csproj",
       "projectName": "MoleculeLibrary",
-      "projectPath": "C:\\Users\\Richa\\source\\repos\\ChemicalBytes\\MoleculeLibrary\\MoleculeLibrary.csproj",
-      "packagesPath": "C:\\Users\\Richa\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Richa\\source\\repos\\ChemicalBytes\\MoleculeLibrary\\obj\\",
+      "projectPath": "C:\\Users\\alexh\\source\\repos\\MoleculeLibrary\\MoleculeLibrary.csproj",
+      "packagesPath": "C:\\Users\\alexh\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\alexh\\source\\repos\\MoleculeLibrary\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Richa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\alexh\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -52,7 +52,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.200"
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -73,7 +73,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

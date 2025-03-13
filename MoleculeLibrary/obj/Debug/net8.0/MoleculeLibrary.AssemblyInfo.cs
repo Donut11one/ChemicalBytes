@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MoleculeLibrary")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f9d7dbcd4925cd5ad2825369fbcb8bdb56a13bc4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("MoleculeLibrary")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MoleculeLibrary")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

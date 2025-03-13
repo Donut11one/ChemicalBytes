@@ -9,14 +9,3 @@ C:\Users\alexh\source\repos\MoleculeLibrary\obj\Debug\net8.0\MoleculeLibrary.dll
 C:\Users\alexh\source\repos\MoleculeLibrary\obj\Debug\net8.0\refint\MoleculeLibrary.dll
 C:\Users\alexh\source\repos\MoleculeLibrary\obj\Debug\net8.0\MoleculeLibrary.pdb
 C:\Users\alexh\source\repos\MoleculeLibrary\obj\Debug\net8.0\ref\MoleculeLibrary.dll
-C:\Winter 2025\App in\Project\MoleculeLibrary\bin\Debug\net8.0\MoleculeLibrary.deps.json
-C:\Winter 2025\App in\Project\MoleculeLibrary\bin\Debug\net8.0\MoleculeLibrary.dll
-C:\Winter 2025\App in\Project\MoleculeLibrary\bin\Debug\net8.0\MoleculeLibrary.pdb
-C:\Winter 2025\App in\Project\MoleculeLibrary\obj\Debug\net8.0\MoleculeLibrary.GeneratedMSBuildEditorConfig.editorconfig
-C:\Winter 2025\App in\Project\MoleculeLibrary\obj\Debug\net8.0\MoleculeLibrary.AssemblyInfoInputs.cache
-C:\Winter 2025\App in\Project\MoleculeLibrary\obj\Debug\net8.0\MoleculeLibrary.AssemblyInfo.cs
-C:\Winter 2025\App in\Project\MoleculeLibrary\obj\Debug\net8.0\MoleculeLibrary.csproj.CoreCompileInputs.cache
-C:\Winter 2025\App in\Project\MoleculeLibrary\obj\Debug\net8.0\MoleculeLibrary.dll
-C:\Winter 2025\App in\Project\MoleculeLibrary\obj\Debug\net8.0\refint\MoleculeLibrary.dll
-C:\Winter 2025\App in\Project\MoleculeLibrary\obj\Debug\net8.0\MoleculeLibrary.pdb
-C:\Winter 2025\App in\Project\MoleculeLibrary\obj\Debug\net8.0\ref\MoleculeLibrary.dll

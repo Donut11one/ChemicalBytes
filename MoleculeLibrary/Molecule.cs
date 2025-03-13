@@ -38,12 +38,12 @@ namespace MoleculeLibrary
         public Bond(Atom atom1, Atom atom2, int bondType)
         {
             if (!atom1.CanFormBond(bondType) || !atom2.CanFormBond(bondType))
-            {
                 throw new System.Exception("Bond exceeds atom valency");
-            }
+
             Atom1 = atom1;
             Atom2 = atom2;
-            BondType = bondType
+            BondType = bondType;
+
             atom1.Bonds.Add(this);
             atom2.Bonds.Add(this);
         }

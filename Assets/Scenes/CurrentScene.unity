@@ -358,8 +358,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44f5120c0236644b04c7598d96caa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Id: 1
-  itemName: Flask
+  Id: 5
+  itemName: Flask5
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 846596895}
   icon: {fileID: 21300000, guid: 771a213fba3ac214aa95959cda134461, type: 3}
@@ -536,7 +536,7 @@ MonoBehaviour:
   walkSpeed: 5
   sprintSpeed: 10
   groundDrag: 8
-  jumpForce: 20
+  jumpForce: 10
   jumpCooldown: 0.25
   airMultiplier: 0.4
   fallMultiplier: 2.5
@@ -775,8 +775,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44f5120c0236644b04c7598d96caa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Id: 1
-  itemName: Flask
+  Id: 2
+  itemName: Flask2
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 846596895}
   icon: {fileID: 21300000, guid: 771a213fba3ac214aa95959cda134461, type: 3}
@@ -1230,8 +1230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44f5120c0236644b04c7598d96caa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Id: 1
-  itemName: Flask
+  Id: 7
+  itemName: Flask7
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 846596895}
   icon: {fileID: 21300000, guid: 771a213fba3ac214aa95959cda134461, type: 3}
@@ -1800,8 +1800,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44f5120c0236644b04c7598d96caa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Id: 1
-  itemName: Flask
+  Id: 6
+  itemName: Flask6
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 846596895}
   icon: {fileID: 21300000, guid: 771a213fba3ac214aa95959cda134461, type: 3}
@@ -2245,8 +2245,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44f5120c0236644b04c7598d96caa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Id: 1
-  itemName: Flask
+  Id: 8
+  itemName: Flask8
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 846596895}
   icon: {fileID: 21300000, guid: 771a213fba3ac214aa95959cda134461, type: 3}
@@ -3785,8 +3785,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44f5120c0236644b04c7598d96caa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Id: 1
-  itemName: Flask
+  Id: 3
+  itemName: Flask3
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 846596895}
   icon: {fileID: 21300000, guid: 771a213fba3ac214aa95959cda134461, type: 3}
@@ -4015,8 +4015,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44f5120c0236644b04c7598d96caa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Id: 1
-  itemName: Flask
+  Id: 4
+  itemName: Flask4
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 846596895}
   icon: {fileID: 21300000, guid: 771a213fba3ac214aa95959cda134461, type: 3}

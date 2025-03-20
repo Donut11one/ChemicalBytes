@@ -35,7 +35,7 @@ public class ElementWheelController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Tab))
         {
             elementWheelSelected = false;
-            anim.SetBool("OpenElementWheel", false);
+            anim.SetBool("OpenElementWheel", false);https://discord.com/channels/168551375280537600/1162027197465374763
 
             // Hide and lock the cursor
             Cursor.visible = false;

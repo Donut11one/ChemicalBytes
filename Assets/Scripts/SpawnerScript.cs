@@ -23,7 +23,7 @@ public class SpawnerScript : MonoBehaviour
     {
         // Update preview sphere position
         Vector3 spawnPosition = playerCamera.position + playerCamera.transform.forward * spawnDistance;
-        previewSphere.transform.position = spawnPosition;
+        //previewSphere.transform.position = spawnPosition;
 
         // Change preview sphere color when a number key is pressed
         if (Input.GetKeyDown(KeyCode.Alpha1)) UpdatePreviewColor(Color.red);

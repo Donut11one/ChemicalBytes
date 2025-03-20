@@ -23,7 +23,7 @@ public class SpawnerScript : MonoBehaviour
     {
         // Update preview sphere position
         Vector3 spawnPosition = playerCamera.position + playerCamera.transform.forward * spawnDistance;
-        previewSphere.transform.position = spawnPosition;
+        //previewSphere.transform.position = spawnPosition;
 
         // Change preview sphere color when a number key is pressed
         if (Input.GetKeyDown(KeyCode.Alpha1)) UpdatePreviewColor(Color.red);
@@ -46,7 +46,7 @@ public class SpawnerScript : MonoBehaviour
     void SpawnSphere(Color color)
     {
         // Instantiate the sphere at the preview position
-        GameObject newSphere = Instantiate(spherePrefab, previewSphere.transform.position, Quaternion.identity);
+        GameObject newSphere = Instantiate(spherePrefab, playerCamera.position + playerCamera.transform.forward * spawnDistance, Quaternion.identity);
 
         // Change sphere color dynamically
         Renderer sphereRenderer = newSphere.GetComponent<Renderer>();

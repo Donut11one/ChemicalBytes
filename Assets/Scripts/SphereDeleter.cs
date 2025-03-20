@@ -1,3 +1,7 @@
+/**
+ * 
+ */
+
 using UnityEngine;
 
 public class SphereDeleter : MonoBehaviour

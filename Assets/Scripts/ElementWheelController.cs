@@ -8,26 +8,47 @@ public class ElementWheelController : MonoBehaviour
     public Image selectedItem;
     public Sprite noImage;
     public static int elementID;
+ 
+    public PlayerCam playerCam;
 
     // Update is called once per frame
     void Update()
     {
+        // Open menu on KeyDown
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            elementWheelSelected = !elementWheelSelected;
-
-        }
-
-        if (elementWheelSelected)
-        {
+            elementWheelSelected = true;
             anim.SetBool("OpenElementWheel", true);
-        }
-        else
-        {
-            anim.SetBool("OpenElementWheel", false);
+
+            // Show and unlock the cursor
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+
+            // Disable camera rotation
+            if (playerCam != null)
+            {
+                playerCam.enabled = false;
+            }
         }
 
-        switch(elementID)
+        // Close menu on KeyUp
+        if (Input.GetKeyUp(KeyCode.Tab))
+        {
+            elementWheelSelected = false;
+            anim.SetBool("OpenElementWheel", false);
+
+            // Hide and lock the cursor
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
+            // Re-enable camera rotation
+            if (playerCam != null)
+            {
+                playerCam.enabled = true;
+            }
+        }
+
+        switch (elementID)
         {
             case 0: // nothing is selected
                 selectedItem.sprite = noImage;

@@ -6,15 +6,15 @@
       "AbsoluteMoniker": "D:0:0:{AC2240A2-FA93-4BE4-A3D6-6137B8960FFD}|..\\MoleculeTest\\MoleculeTest.csproj|c:\\users\\alexh\\source\\repos\\moleculetest\\smilesgentest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AC2240A2-FA93-4BE4-A3D6-6137B8960FFD}|..\\MoleculeTest\\MoleculeTest.csproj|c:\\users\\alexh\\source\\repos\\moleculetest\\pubchemapitest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3A0992A0-4DCA-4FB5-A8D1-B178D5B0E9F5}|MoleculeLibrary.csproj|c:\\users\\alexh\\source\\repos\\moleculelibrary\\smilesgenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3A0992A0-4DCA-4FB5-A8D1-B178D5B0E9F5}|MoleculeLibrary.csproj|solutionrelative:smilesgenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3A0992A0-4DCA-4FB5-A8D1-B178D5B0E9F5}|MoleculeLibrary.csproj|c:\\users\\alexh\\source\\repos\\moleculelibrary\\molecule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3A0992A0-4DCA-4FB5-A8D1-B178D5B0E9F5}|MoleculeLibrary.csproj|solutionrelative:molecule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC2240A2-FA93-4BE4-A3D6-6137B8960FFD}|..\\MoleculeTest\\MoleculeTest.csproj|c:\\users\\alexh\\source\\repos\\moleculetest\\pubchemapitest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{AC2240A2-FA93-4BE4-A3D6-6137B8960FFD}|..\\MoleculeTest\\MoleculeTest.csproj|c:\\users\\alexh\\source\\repos\\moleculetest\\test1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
@@ -45,27 +45,27 @@
               "RelativeDocumentMoniker": "..\\MoleculeTest\\SMILESGenTest.cs",
               "ToolTip": "C:\\Users\\alexh\\source\\repos\\MoleculeTest\\SMILESGenTest.cs",
               "RelativeToolTip": "..\\MoleculeTest\\SMILESGenTest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAAD4AAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-20T07:02:13.427Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "SMILESGenerator.cs",
               "DocumentMoniker": "C:\\Users\\alexh\\source\\repos\\MoleculeLibrary\\SMILESGenerator.cs",
               "RelativeDocumentMoniker": "SMILESGenerator.cs",
               "ToolTip": "C:\\Users\\alexh\\source\\repos\\MoleculeLibrary\\SMILESGenerator.cs",
               "RelativeToolTip": "SMILESGenerator.cs",
-              "ViewState": "AgIAABgAAAAAaGZmZqYvwCkAAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAACEAAAAAaGZmZqYvwDUAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-20T07:02:15.201Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "Molecule.cs",
               "DocumentMoniker": "C:\\Users\\alexh\\source\\repos\\MoleculeLibrary\\Molecule.cs",
               "RelativeDocumentMoniker": "Molecule.cs",
@@ -78,7 +78,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "PubChemAPITest.cs",
               "DocumentMoniker": "C:\\Users\\alexh\\source\\repos\\MoleculeTest\\PubChemAPITest.cs",
               "RelativeDocumentMoniker": "..\\MoleculeTest\\PubChemAPITest.cs",

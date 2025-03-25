@@ -35,7 +35,7 @@ public class ElementWheelController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Tab))
         {
             elementWheelSelected = false;
-            anim.SetBool("OpenElementWheel", false);https://discord.com/channels/168551375280537600/1162027197465374763
+            anim.SetBool("OpenElementWheel", false);
 
             // Hide and lock the cursor
             Cursor.visible = false;
@@ -50,10 +50,12 @@ public class ElementWheelController : MonoBehaviour
 
         switch (elementID)
         {
-            case 0: // nothing is selected
+            case 0:
+                // nothing is selected
                 selectedItem.sprite = noImage;
                 break;
-            case 1: // test element
+            case 1:
+                // test element
                 Debug.Log("Flask");
                 selectedItem.sprite = Resources.Load<Sprite>("Fizzling-Flask");
                 break;

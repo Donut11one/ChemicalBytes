@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 5072045079542911540}
   - component: {fileID: 3896259983218989748}
   - component: {fileID: 7412530917065038469}
-  m_Layer: 7
+  - component: {fileID: 185713054869583142}
+  m_Layer: 10
   m_Name: spawnobject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,3 +137,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &185713054869583142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4566075121331663613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99e2921b5c4618141bb7c427ea8d4528, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  element: 
+  formalCharge: 0
+  isSelected: 0
+  connectedAtoms: []
+  bondTypes: 

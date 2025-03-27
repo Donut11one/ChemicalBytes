@@ -3,9 +3,9 @@ using UnityEngine;
 public class SpherePlacer : MonoBehaviour
 {
     [Header("Prefabs")]
-    public GameObject spherePrefab;    // Your sphere prefab (make sure it has a collider and is tagged "Sphere")
-    public GameObject bondPrefab;      // A cylinder prefab for the bond; create a simple cylinder in Unity
-    public GameObject previewPrefab;   // A semi-transparent preview sphere prefab (can be a duplicate of your spherePrefab with a special material)
+    public GameObject spherePrefab;    // Your sphere prefab (ensure it has a collider and is tagged "Sphere")
+    public GameObject bondPrefab;      // A cylinder prefab for the bond
+    public GameObject previewPrefab;   // A semi-transparent preview sphere prefab
 
     [Header("Placement Settings")]
     public Transform playerCamera;     // Reference to the player’s camera (or the object used for aiming)
@@ -13,11 +13,13 @@ public class SpherePlacer : MonoBehaviour
     public float activationRange = 5f; // How close the player must be to a candidate position for the preview to show
 
     // Internal references
-    private GameObject currentPreview;       
-    private GameObject selectedBaseSphere;   
-    private GameObject lastHighlightedSphere; 
+    private GameObject currentPreview;
+    private GameObject selectedBaseSphere;
+    private GameObject lastHighlightedSphere;
 
-
+    // Element and charge settings
+    private string selectedElement = "C"; // Default element is Carbon
+    private int selectedCharge = 0;       // Default charge is 0  
 
     void Start()
     {
@@ -27,9 +29,26 @@ public class SpherePlacer : MonoBehaviour
 
         if (existingSpheres.Length == 0)
         {
+            // Set the starting atom type to Carbon with a charge of 0.
+            SetAtomType("C", 0);
+
             Debug.Log("No spheres found. Spawning initial sphere at (0,0,0).");
             GameObject startingSphere = Instantiate(spherePrefab, Vector3.zero, Quaternion.identity);
-            startingSphere.tag = "Sphere";  
+            startingSphere.tag = "Sphere";
+
+            // If the starting sphere has an AtomController, update its properties.
+            AtomController atomController = startingSphere.GetComponent<AtomController>();
+            if (atomController != null)
+            {
+                atomController.SetAtomProperties("C", 0);
+            }
+
+            // Set the starting sphere's color based on Carbon.
+            Renderer rend = startingSphere.GetComponent<Renderer>();
+            if (rend != null)
+            {
+                rend.material.color = GetElementColor("C");
+            }
         }
     }
 
@@ -37,6 +56,16 @@ public class SpherePlacer : MonoBehaviour
     void Update()
     {
         UpdatePreview();
+
+        // Change atom type when a number key is pressed
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SetAtomType("C", 0); // Carbon
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SetAtomType("O", 0); // Oxygen
+        if (Input.GetKeyDown(KeyCode.Alpha3)) SetAtomType("N", 0); // Nitrogen
+        if (Input.GetKeyDown(KeyCode.Alpha4)) SetAtomType("Na", 1); // Sodium +1
+        if (Input.GetKeyDown(KeyCode.Alpha5)) SetAtomType("Cl", -1); // Chlorine -1
+        if (Input.GetKeyDown(KeyCode.Alpha6)) SetAtomType("S", 0); // Sulfur
+        if (Input.GetKeyDown(KeyCode.Alpha7)) SetAtomType("P", 0); // Phosphorous
+        if (Input.GetKeyDown(KeyCode.Alpha8)) SetAtomType("F", 0); // Fluorine
 
         // When the user presses E, place a new sphere if a valid preview exists.
         if (Input.GetKeyDown(KeyCode.E) && currentPreview != null)
@@ -118,15 +147,30 @@ public class SpherePlacer : MonoBehaviour
         }
     }
 
-
     /// <summary>
-    /// Called when the user confirms placement. Instantiates the new sphere and bond.
+    /// Called when the user confirms placement. Instantiates the new sphere,
+    /// sets its atom properties and color, and creates a bond.
     /// </summary>
     void PlaceSphere()
     {
         // Instantiate the new sphere at the preview's position.
         GameObject newSphere = Instantiate(spherePrefab, currentPreview.transform.position, Quaternion.identity);
         newSphere.tag = "Sphere"; // Ensure it's tagged for future searches
+
+        // Set atom properties based on the current selection.
+        // (Make sure your spherePrefab has an AtomController component if needed.)
+        AtomController atomController = newSphere.GetComponent<AtomController>();
+        if (atomController != null)
+        {
+            atomController.SetAtomProperties(selectedElement, selectedCharge);
+        }
+
+        // Change the sphere's color based on the selected element.
+        Renderer newAtomRenderer = newSphere.GetComponent<Renderer>();
+        if (newAtomRenderer != null)
+        {
+            newAtomRenderer.material.color = GetElementColor(selectedElement);
+        }
 
         // Create the bond between the selected base sphere and the new sphere.
         if (selectedBaseSphere != null && bondPrefab != null)
@@ -137,9 +181,16 @@ public class SpherePlacer : MonoBehaviour
         // Clear the preview.
         Destroy(currentPreview);
         currentPreview = null;
-
-        // Optionally, remove highlight from the base sphere.
         UnhighlightLastSphere();
+    }
+
+    /// <summary>
+    /// Updates the current selected element and charge.
+    /// </summary>
+    void SetAtomType(string element, int charge)
+    {
+        selectedElement = element;
+        selectedCharge = charge;
     }
 
     /// <summary>
@@ -147,63 +198,67 @@ public class SpherePlacer : MonoBehaviour
     /// The cylinder is positioned at the midpoint, aligned along the connecting vector,
     /// and scaled so that its height equals the fixed distance.
     /// </summary>
-    /// <param name="startPos">Position of the base sphere.</param>
-    /// <param name="endPos">Position of the new sphere.</param>
     void CreateBond(Vector3 startPos, Vector3 endPos)
     {
-        // Calculate the midpoint for positioning the bond.
         Vector3 midPoint = (startPos + endPos) / 2;
         GameObject bond = Instantiate(bondPrefab, midPoint, Quaternion.identity);
 
-        // Determine the direction from start to end.
         Vector3 direction = endPos - startPos;
-        // Align the bond so its "up" axis points along the direction.
         bond.transform.up = direction.normalized;
 
-        // Assuming your bond prefab is a default cylinder (height 2 units),
-        // scale its Y-axis so that its length equals the fixedDistance.
         Vector3 bondScale = bond.transform.localScale;
-        bondScale.y = fixedDistance / 2f; // because 2 * (fixedDistance/2) = fixedDistance
+        bondScale.y = fixedDistance / 2f; // Assuming default cylinder height is 2 units.
         bond.transform.localScale = bondScale;
     }
 
     /// <summary>
     /// Highlights the provided sphere to indicate that it is the active base for placement.
-    /// This could be done, for example, by enabling an outline component or changing its material.
+    /// This could be done, for example, by modifying its emission color.
     /// </summary>
-    /// <param name="sphere">The sphere to highlight.</param>
     void HighlightSphere(GameObject sphere)
     {
-        // Temporarily remove the Outline code until you add an Outline component to your project.
-        // var outline = sphere.GetComponent<Outline>();
-        // if (outline != null)
-        // {
-        //     outline.enabled = true;
-        // }
+        UnhighlightLastSphere();
 
-        // Alternatively, change the material's emission color to highlight.
         Renderer rend = sphere.GetComponent<Renderer>();
         if (rend != null)
         {
             rend.material.SetColor("_EmissionColor", Color.yellow);
         }
-
         lastHighlightedSphere = sphere;
     }
-
 
     /// <summary>
     /// Removes the highlight from the last highlighted sphere.
     /// </summary>
     void UnhighlightLastSphere()
     {
-        
-                Renderer rend = lastHighlightedSphere.GetComponent<Renderer>();
-                if (rend != null)
-                {
-                    // Reset the emission color to black or its default value.
-                    rend.material.SetColor("_EmissionColor", Color.black);
-                }
-           
+        if (lastHighlightedSphere != null)
+        {
+            Renderer rend = lastHighlightedSphere.GetComponent<Renderer>();
+            if (rend != null)
+            {
+                rend.material.SetColor("_EmissionColor", Color.black);
+            }
+            lastHighlightedSphere = null;
+        }
+    }
+
+    /// <summary>
+    /// Returns the color corresponding to a given element.
+    /// </summary>
+    private Color GetElementColor(string element)
+    {
+        switch (element)
+        {
+            case "C": return new Color(0.5f, 0.5f, 0.5f); // Grey for Carbon
+            case "O": return new Color(1f, 0f, 0f);       // Red for Oxygen
+            case "N": return new Color(0f, 0f, 1f);       // Blue for Nitrogen
+            case "Na": return new Color(1f, 0.5f, 0f);      // Orange for Sodium
+            case "Cl": return new Color(0f, 1f, 0f);        // Green for Chlorine
+            case "S": return new Color(1f, 1f, 0f);         // Yellow for Sulfur
+            case "P": return new Color(1f, 0f, 1f);         // Magenta for Phosphorous
+            case "F": return new Color(0f, 1f, 1f);         // Cyan for Fluorine
+            default: return Color.white;                   // Default to white
+        }
     }
 }

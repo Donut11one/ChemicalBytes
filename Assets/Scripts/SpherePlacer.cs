@@ -17,10 +17,6 @@ public class SpherePlacer : MonoBehaviour
     private GameObject selectedBaseSphere;
     private GameObject lastHighlightedSphere;
 
-    // Element and charge settings
-    private string selectedElement = "C"; // Default element is Carbon
-    private int selectedCharge = 0;       // Default charge is 0  
-
     void Start()
     {
         // Check if any sphere exists (tagged "Sphere")
@@ -29,25 +25,26 @@ public class SpherePlacer : MonoBehaviour
 
         if (existingSpheres.Length == 0)
         {
-            // Set the starting atom type to Carbon with a charge of 0.
-            SetAtomType("C", 0);
-
             Debug.Log("No spheres found. Spawning initial sphere at (0,0,0).");
             GameObject startingSphere = Instantiate(spherePrefab, Vector3.zero, Quaternion.identity);
             startingSphere.tag = "Sphere";
+
+            // Read the "default" element from wheel script:
+            string DefaultElem = ElementWheelController.Instance.CurrentElement;
+            int DefaultCharge = ElementWheelController.Instance.CurrentCharge;
 
             // If the starting sphere has an AtomController, update its properties.
             AtomController atomController = startingSphere.GetComponent<AtomController>();
             if (atomController != null)
             {
-                atomController.SetAtomProperties("C", 0);
+                atomController.SetAtomProperties(DefaultElem, DefaultCharge);
             }
 
             // Set the starting sphere's color based on Carbon.
             Renderer rend = startingSphere.GetComponent<Renderer>();
             if (rend != null)
             {
-                rend.material.color = GetElementColor("C");
+                rend.material.color = GetElementColor(DefaultElem);
             }
         }
     }
@@ -56,16 +53,6 @@ public class SpherePlacer : MonoBehaviour
     void Update()
     {
         UpdatePreview();
-
-        // Change atom type when a number key is pressed
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SetAtomType("C", 0); // Carbon
-        if (Input.GetKeyDown(KeyCode.Alpha2)) SetAtomType("O", 0); // Oxygen
-        if (Input.GetKeyDown(KeyCode.Alpha3)) SetAtomType("N", 0); // Nitrogen
-        if (Input.GetKeyDown(KeyCode.Alpha4)) SetAtomType("Na", 1); // Sodium +1
-        if (Input.GetKeyDown(KeyCode.Alpha5)) SetAtomType("Cl", -1); // Chlorine -1
-        if (Input.GetKeyDown(KeyCode.Alpha6)) SetAtomType("S", 0); // Sulfur
-        if (Input.GetKeyDown(KeyCode.Alpha7)) SetAtomType("P", 0); // Phosphorous
-        if (Input.GetKeyDown(KeyCode.Alpha8)) SetAtomType("F", 0); // Fluorine
 
         // When the user presses E, place a new sphere if a valid preview exists.
         if (Input.GetKeyDown(KeyCode.E) && currentPreview != null)
@@ -157,6 +144,10 @@ public class SpherePlacer : MonoBehaviour
         GameObject newSphere = Instantiate(spherePrefab, currentPreview.transform.position, Quaternion.identity);
         newSphere.tag = "Sphere"; // Ensure it's tagged for future searches
 
+        // 2. Read the current element & charge from the wheel/selector
+        string selectedElement = ElementWheelController.Instance.CurrentElement;
+        int selectedCharge = ElementWheelController.Instance.CurrentCharge;
+
         // Set atom properties based on the current selection.
         // (Make sure your spherePrefab has an AtomController component if needed.)
         AtomController atomController = newSphere.GetComponent<AtomController>();
@@ -184,14 +175,14 @@ public class SpherePlacer : MonoBehaviour
         UnhighlightLastSphere();
     }
 
-    /// <summary>
-    /// Updates the current selected element and charge.
-    /// </summary>
-    void SetAtomType(string element, int charge)
-    {
-        selectedElement = element;
-        selectedCharge = charge;
-    }
+    ///// <summary>
+    ///// Updates the current selected element and charge.
+    ///// </summary>
+    //void SetAtomType(string element, int charge)
+    //{
+    //    selectedElement = element;
+    //    selectedCharge = charge;
+    //}
 
     /// <summary>
     /// Instantiates a bond (cylinder) connecting two points.

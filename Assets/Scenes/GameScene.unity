@@ -250,12 +250,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44f5120c0236644b04c7598d96caa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementSymbol: C
-  elementCharge: 0
-  Id: 5
+  elementSymbol: Cl
+  elementCharge: -1
+  icon: {fileID: 21300000, guid: 94b63eb9ecd823c4e8dc22dcb1f25091, type: 3}
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 202419212}
-  icon: {fileID: 21300000, guid: 94b63eb9ecd823c4e8dc22dcb1f25091, type: 3}
 --- !u!114 &37134865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -605,12 +604,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44f5120c0236644b04c7598d96caa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementSymbol: C
+  elementSymbol: O
   elementCharge: 0
-  Id: 2
+  icon: {fileID: 21300000, guid: 8fe5fe7df700773459e1b000e00973b4, type: 3}
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 202419212}
-  icon: {fileID: 21300000, guid: 8fe5fe7df700773459e1b000e00973b4, type: 3}
 --- !u!114 &95151755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1148,12 +1146,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44f5120c0236644b04c7598d96caa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementSymbol: C
+  elementSymbol: P
   elementCharge: 0
-  Id: 7
+  icon: {fileID: 21300000, guid: e0af6db6e8e56ab489a46434d21df50c, type: 3}
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 202419212}
-  icon: {fileID: 21300000, guid: e0af6db6e8e56ab489a46434d21df50c, type: 3}
 --- !u!114 &375138261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1487,10 +1484,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementSymbol: C
   elementCharge: 0
-  Id: 1
+  icon: {fileID: 21300000, guid: 07aa1aeafe34d88499e9ad26b83e8ed9, type: 3}
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 202419212}
-  icon: {fileID: 21300000, guid: 07aa1aeafe34d88499e9ad26b83e8ed9, type: 3}
 --- !u!114 &386438855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1744,12 +1740,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44f5120c0236644b04c7598d96caa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementSymbol: C
+  elementSymbol: S
   elementCharge: 0
-  Id: 6
+  icon: {fileID: 21300000, guid: 3813e28e159e7434ba86a3c81d29b065, type: 3}
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 202419212}
-  icon: {fileID: 21300000, guid: 3813e28e159e7434ba86a3c81d29b065, type: 3}
 --- !u!114 &513309574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2202,12 +2197,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44f5120c0236644b04c7598d96caa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementSymbol: C
+  elementSymbol: F
   elementCharge: 0
-  Id: 8
+  icon: {fileID: 21300000, guid: 99dff8fb8424680419bfaafff9db90a8, type: 3}
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 202419212}
-  icon: {fileID: 21300000, guid: 99dff8fb8424680419bfaafff9db90a8, type: 3}
 --- !u!114 &695237589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2379,7 +2373,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -3, y: 0}
   m_SizeDelta: {x: 125, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &805101806
@@ -2389,7 +2383,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 805101804}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -3316,10 +3310,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf89537f8464bc34da58beac71430289, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCam: {fileID: 1360266733}
   anim: {fileID: 1644689500}
-  selectedItem: {fileID: 0}
-  noImage: {fileID: 0}
-  playerCam: {fileID: 0}
+  selectedItem: {fileID: 202419212}
+  noImage: {fileID: 21300000, guid: 0dc035333f600c542ae7a290ea76967d, type: 3}
 --- !u!95 &1644689500
 Animator:
   serializedVersion: 7
@@ -3700,12 +3694,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44f5120c0236644b04c7598d96caa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementSymbol: C
+  elementSymbol: N
   elementCharge: 0
-  Id: 3
+  icon: {fileID: 21300000, guid: 4559f001b3f27f045a3f13f0dab717cd, type: 3}
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 202419212}
-  icon: {fileID: 21300000, guid: 4559f001b3f27f045a3f13f0dab717cd, type: 3}
 --- !u!114 &2009792598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3943,12 +3936,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff44f5120c0236644b04c7598d96caa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elementSymbol: C
-  elementCharge: 0
-  Id: 4
+  elementSymbol: Na
+  elementCharge: 1
+  icon: {fileID: 21300000, guid: 7260b6395e343bc459b65138adc2fe81, type: 3}
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 202419212}
-  icon: {fileID: 21300000, guid: 7260b6395e343bc459b65138adc2fe81, type: 3}
 --- !u!114 &2027621427
 MonoBehaviour:
   m_ObjectHideFlags: 0

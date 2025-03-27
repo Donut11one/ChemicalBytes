@@ -7,10 +7,8 @@ public class ElementWheelController : MonoBehaviour
     // Simple singleton for easy access in SpherePlacer
     public static ElementWheelController Instance;
 
-    // drag your PlayerCam script here in the Inspector
+    // holds our PlayerCam script
     public PlayerCam playerCam;
-    // drag your PlayerMovement script here as well
-    //public PlayerMovement playerMovement;
 
     // These will be used by the spawner script to determine which element to spawn
     public string CurrentElement { get; private set; } = "C"; // Default element is Carbon
@@ -26,7 +24,7 @@ public class ElementWheelController : MonoBehaviour
 
     private void Awake()
     {
-        // Set up a simple singleton reference so Spawner can easily grab our instance
+        // a simple singleton reference so Spawner can easily grab our instance
         Instance = this;
     }
 
@@ -39,8 +37,7 @@ public class ElementWheelController : MonoBehaviour
         CurrentCharge = charge;
         Debug.Log("SetElement: " + CurrentElement + " (charge " + charge + ")");
 
-        // Optionally update the UI image to reflect the newly selected element
-        // This is purely for visual feedback in the wheel's "selectedItem" image
+        // This is purely for visual feedback for the keyboard input
         selectedItem.sprite = GetElementSprite(elementSymbol);
     }
 
@@ -52,14 +49,14 @@ public class ElementWheelController : MonoBehaviour
     {
         switch (elementSymbol)
         {
-            case "C": return Resources.Load<Sprite>("carbon");
-            case "O": return Resources.Load<Sprite>("oxygen");
-            case "N": return Resources.Load<Sprite>("nitrogen");
-            case "Na": return Resources.Load<Sprite>("sodium");
-            case "Cl": return Resources.Load<Sprite>("chlorine");
-            case "S": return Resources.Load<Sprite>("sulfur");
-            case "P": return Resources.Load<Sprite>("phosphorous");
-            case "F": return Resources.Load<Sprite>("fluorine");
+            case "C": return Resources.Load<Sprite>("PreviewIcons/carbon");
+            case "O": return Resources.Load<Sprite>("PreviewIcons/oxygen");
+            case "N": return Resources.Load<Sprite>("PreviewIcons/nitrogen");
+            case "Na": return Resources.Load<Sprite>("PreviewIcons/sodium");
+            case "Cl": return Resources.Load<Sprite>("PreviewIcons/chlorine");
+            case "S": return Resources.Load<Sprite>("PreviewIcons/sulfur");
+            case "P": return Resources.Load<Sprite>("PreviewIcons/phosphorous");
+            case "F": return Resources.Load<Sprite>("PreviewIcons/fluorine");
             default: return noImage;
         }
     }
@@ -68,10 +65,7 @@ public class ElementWheelController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        // ---------------------------------------------------------
-        // 1) Numeric Key Input to Directly Set the Element
-        // ---------------------------------------------------------
+        // Numerical key equip your element
         if (Input.GetKeyDown(KeyCode.Alpha1)) SetElement("C", 0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) SetElement("O", 0);
         if (Input.GetKeyDown(KeyCode.Alpha3)) SetElement("N", 0);

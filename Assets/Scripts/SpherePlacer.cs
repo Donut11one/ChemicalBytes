@@ -175,15 +175,6 @@ public class SpherePlacer : MonoBehaviour
         UnhighlightLastSphere();
     }
 
-    ///// <summary>
-    ///// Updates the current selected element and charge.
-    ///// </summary>
-    //void SetAtomType(string element, int charge)
-    //{
-    //    selectedElement = element;
-    //    selectedCharge = charge;
-    //}
-
     /// <summary>
     /// Instantiates a bond (cylinder) connecting two points.
     /// The cylinder is positioned at the midpoint, aligned along the connecting vector,

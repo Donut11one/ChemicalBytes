@@ -65,15 +65,20 @@ public class ElementWheelController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Numerical key equip your element
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SetElement("C", 0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) SetElement("O", 0);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) SetElement("N", 0);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) SetElement("Na", 1);
-        if (Input.GetKeyDown(KeyCode.Alpha5)) SetElement("Cl", -1);
-        if (Input.GetKeyDown(KeyCode.Alpha6)) SetElement("S", 0);
-        if (Input.GetKeyDown(KeyCode.Alpha7)) SetElement("P", 0);
-        if (Input.GetKeyDown(KeyCode.Alpha8)) SetElement("F", 0);
+        // Only allow element selection if the game is not paused
+        if (!PauseMenu.isPaused)
+        {
+
+            // Numerical key equip your element
+            if (Input.GetKeyDown(KeyCode.Alpha1)) SetElement("C", 0);
+            if (Input.GetKeyDown(KeyCode.Alpha2)) SetElement("O", 0);
+            if (Input.GetKeyDown(KeyCode.Alpha3)) SetElement("N", 0);
+            if (Input.GetKeyDown(KeyCode.Alpha4)) SetElement("Na", 1);
+            if (Input.GetKeyDown(KeyCode.Alpha5)) SetElement("Cl", -1);
+            if (Input.GetKeyDown(KeyCode.Alpha6)) SetElement("S", 0);
+            if (Input.GetKeyDown(KeyCode.Alpha7)) SetElement("P", 0);
+            if (Input.GetKeyDown(KeyCode.Alpha8)) SetElement("F", 0);
+        }
 
         // Open menu on KeyDown
         if (Input.GetKeyDown(KeyCode.Tab) && !elementWheelSelected)

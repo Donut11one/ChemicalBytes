@@ -54,10 +54,15 @@ public class SpherePlacer : MonoBehaviour
     {
         UpdatePreview();
 
-        // When the user presses E, place a new sphere if a valid preview exists.
-        if (Input.GetKeyDown(KeyCode.E) && currentPreview != null)
+        // If not paused, allow the user to place a new sphere. If paused do not allow placement.
+        if (!PauseMenu.isPaused)
         {
-            PlaceSphere();
+
+            // When the user presses E, place a new sphere if a valid preview exists.
+            if (Input.GetKeyDown(KeyCode.E) && currentPreview != null)
+            {
+                PlaceSphere();
+            }
         }
     }
 

@@ -4,13 +4,18 @@ using TMPro;
 
 public class ElementWheelButtonController : MonoBehaviour
 {
-    public int Id;
-    private Animator anim;
-    public string          itemName;
+    [Header("Element Data for This Button")]
+    public string elementSymbol = "C";
+    public int elementCharge = 0;
+    public Sprite icon;
+
+    [Header("UI References")]
+    // References for the GUI
     public TextMeshProUGUI itemNameText;
     public Image selectedItem;
+
+    private Animator anim;
     private bool isSelected = false;
-    public Sprite icon;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,28 +29,32 @@ public class ElementWheelButtonController : MonoBehaviour
         if(isSelected)
         {
             selectedItem.sprite = icon;
-            itemNameText.text   = itemName;
+            itemNameText.text   = elementSymbol;
         }
     }
 
     public void Selected()
     {
         isSelected = true;
-        ElementWheelController.elementID = Id;
+
+        // Instead of just setting a static elementID, 
+        // call a method on the ElementWheelController to set the element
+        ElementWheelController.Instance.SetElement(elementSymbol, elementCharge);
     }
 
     public void Deselected()
     {
         isSelected = false;
-        ElementWheelController.elementID = 0;
-
+        // Reset the text and sprite
+        itemNameText.text = "";
+        //selectedItem.sprite = Resources.Load<Sprite>("None");
     }
 
     public void HoverEnter()
     {
         // set the bool we named in animator "Hover" to true. Important bool must match name in animator
         anim.SetBool("Hover", true);
-        itemNameText.text = itemName;
+        itemNameText.text = "";
     }
 
     public void HoverExit()

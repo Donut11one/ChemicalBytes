@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3896259983218989748}
   - component: {fileID: 7412530917065038469}
   - component: {fileID: 185713054869583142}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: spawnobject
   m_TagString: Sphere
   m_Icon: {fileID: 0}

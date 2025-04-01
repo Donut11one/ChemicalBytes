@@ -52,6 +52,8 @@ public class SpherePlacer : MonoBehaviour
 
     void Update()
     {
+        GameObject[] existingSpheres = GameObject.FindGameObjectsWithTag("Sphere");
+        Debug.Log("Number of spheres found: " + existingSpheres.Length);
         UpdatePreview();
 
         // If not paused, allow the user to place a new sphere. If paused do not allow placement.

@@ -131,6 +131,7 @@ public class PlayerMovement : MonoBehaviour
         if (!isFlying)
             isGrounded = Physics.Raycast(rb.position, Vector3.down, playerHeight, whatIsGround);
 
+        isGrounded = Physics.Raycast(rb.position, Vector3.down, whatIsGround);
         MyInput();
         SpeedControl();
         StateHandler();

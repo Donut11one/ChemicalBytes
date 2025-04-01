@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 37134865}
   - component: {fileID: 37134864}
   - component: {fileID: 37134863}
+  - component: {fileID: 37134869}
   m_Layer: 5
   m_Name: FifthWheelButton
   m_TagString: Untagged
@@ -294,7 +295,7 @@ MonoBehaviour:
     m_SelectedColor: {r: 0.54772836, g: 0.2805714, b: 0.6132076, a: 0.6666667}
     m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.39215687}
     m_ColorMultiplier: 1
-    m_FadeDuration: 0.2
+    m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
@@ -361,6 +362,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 37134861}
   m_CullTransparentMesh: 0
+--- !u!95 &37134869
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37134861}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3e47eb16d671dba42ad4827d9c4fed86, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &58423515
 GameObject:
   m_ObjectHideFlags: 0
@@ -490,6 +513,7 @@ GameObject:
   - component: {fileID: 95151755}
   - component: {fileID: 95151754}
   - component: {fileID: 95151753}
+  - component: {fileID: 95151759}
   m_Layer: 5
   m_Name: SecondWheelButton
   m_TagString: Untagged
@@ -650,7 +674,7 @@ MonoBehaviour:
     m_SelectedColor: {r: 0.54772836, g: 0.2805714, b: 0.6132076, a: 0.6666667}
     m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.39215687}
     m_ColorMultiplier: 1
-    m_FadeDuration: 0.2
+    m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
@@ -717,6 +741,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 95151751}
   m_CullTransparentMesh: 0
+--- !u!95 &95151759
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95151751}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3e47eb16d671dba42ad4827d9c4fed86, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &98800083
 GameObject:
   m_ObjectHideFlags: 0
@@ -1032,6 +1078,7 @@ GameObject:
   - component: {fileID: 375138261}
   - component: {fileID: 375138260}
   - component: {fileID: 375138259}
+  - component: {fileID: 375138265}
   m_Layer: 5
   m_Name: SeventhWheelButton
   m_TagString: Untagged
@@ -1192,7 +1239,7 @@ MonoBehaviour:
     m_SelectedColor: {r: 0.54772836, g: 0.2805714, b: 0.6132076, a: 0.6666667}
     m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.39215687}
     m_ColorMultiplier: 1
-    m_FadeDuration: 0.2
+    m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
@@ -1259,6 +1306,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 375138257}
   m_CullTransparentMesh: 0
+--- !u!95 &375138265
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375138257}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3e47eb16d671dba42ad4827d9c4fed86, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &386438848
 GameObject:
   m_ObjectHideFlags: 0
@@ -1274,6 +1343,7 @@ GameObject:
   - component: {fileID: 386438855}
   - component: {fileID: 386438854}
   - component: {fileID: 386438853}
+  - component: {fileID: 386438856}
   m_Layer: 5
   m_Name: FirstWheelButton
   m_TagString: Untagged
@@ -1290,7 +1360,7 @@ RectTransform:
   m_GameObject: {fileID: 386438848}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.15, y: 1.15, z: 1.15}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 957029135}
@@ -1328,7 +1398,7 @@ MonoBehaviour:
     m_SelectedColor: {r: 0.54772836, g: 0.2805714, b: 0.6132076, a: 0.6666667}
     m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.39215687}
     m_ColorMultiplier: 1
-    m_FadeDuration: 0.2
+    m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
@@ -1501,6 +1571,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44142419377a54a888bc02a1d67e01f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &386438856
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386438848}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3e47eb16d671dba42ad4827d9c4fed86, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &449723847
 GameObject:
   m_ObjectHideFlags: 0
@@ -1759,6 +1851,7 @@ GameObject:
   - component: {fileID: 513309574}
   - component: {fileID: 513309573}
   - component: {fileID: 513309572}
+  - component: {fileID: 513309578}
   m_Layer: 5
   m_Name: SixthWheelButton
   m_TagString: Untagged
@@ -1919,7 +2012,7 @@ MonoBehaviour:
     m_SelectedColor: {r: 0.54772836, g: 0.2805714, b: 0.6132076, a: 0.6666667}
     m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.39215687}
     m_ColorMultiplier: 1
-    m_FadeDuration: 0.2
+    m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
@@ -1986,6 +2079,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 513309570}
   m_CullTransparentMesh: 0
+--- !u!95 &513309578
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513309570}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3e47eb16d671dba42ad4827d9c4fed86, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &561560662
 GameObject:
   m_ObjectHideFlags: 0
@@ -2266,6 +2381,7 @@ GameObject:
   - component: {fileID: 695237589}
   - component: {fileID: 695237588}
   - component: {fileID: 695237587}
+  - component: {fileID: 695237593}
   m_Layer: 5
   m_Name: EighthWheelButton
   m_TagString: Untagged
@@ -2426,7 +2542,7 @@ MonoBehaviour:
     m_SelectedColor: {r: 0.54772836, g: 0.2805714, b: 0.6132076, a: 0.6666667}
     m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.39215687}
     m_ColorMultiplier: 1
-    m_FadeDuration: 0.2
+    m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
@@ -2493,6 +2609,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 695237585}
   m_CullTransparentMesh: 0
+--- !u!95 &695237593
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695237585}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3e47eb16d671dba42ad4827d9c4fed86, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &725466148
 GameObject:
   m_ObjectHideFlags: 0
@@ -4768,6 +4906,7 @@ GameObject:
   - component: {fileID: 2009792598}
   - component: {fileID: 2009792597}
   - component: {fileID: 2009792596}
+  - component: {fileID: 2009792602}
   m_Layer: 5
   m_Name: ThirdWheelButton
   m_TagString: Untagged
@@ -4928,7 +5067,7 @@ MonoBehaviour:
     m_SelectedColor: {r: 0.54772836, g: 0.2805714, b: 0.6132076, a: 0.6666667}
     m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.39215687}
     m_ColorMultiplier: 1
-    m_FadeDuration: 0.2
+    m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
@@ -4995,6 +5134,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2009792594}
   m_CullTransparentMesh: 0
+--- !u!95 &2009792602
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009792594}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3e47eb16d671dba42ad4827d9c4fed86, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2027621423
 GameObject:
   m_ObjectHideFlags: 0
@@ -5010,6 +5171,7 @@ GameObject:
   - component: {fileID: 2027621427}
   - component: {fileID: 2027621426}
   - component: {fileID: 2027621425}
+  - component: {fileID: 2027621431}
   m_Layer: 5
   m_Name: FourthWheelButton
   m_TagString: Untagged
@@ -5170,7 +5332,7 @@ MonoBehaviour:
     m_SelectedColor: {r: 0.54772836, g: 0.2805714, b: 0.6132076, a: 0.6666667}
     m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.39215687}
     m_ColorMultiplier: 1
-    m_FadeDuration: 0.2
+    m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
@@ -5237,6 +5399,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2027621423}
   m_CullTransparentMesh: 0
+--- !u!95 &2027621431
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027621423}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3e47eb16d671dba42ad4827d9c4fed86, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2043777867
 GameObject:
   m_ObjectHideFlags: 0

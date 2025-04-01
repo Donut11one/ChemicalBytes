@@ -48,6 +48,8 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(false);
         Time.timeScale = 1f; // Resumes the game, continues animations and updates
         isPaused = false;
+        Cursor.visible = false; // removes cursor after resume is clicked.
+
     }
 
     public void GoToMainMenu()

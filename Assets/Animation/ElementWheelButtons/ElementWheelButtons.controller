@@ -19,7 +19,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.75
+  m_ExitTime: 0
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -68,7 +68,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: b72c12e6f8b7e0d4a92b3c70b85aeff5, type: 2}
+  m_Motion: {fileID: 7400000, guid: aedb855cae8d6f447be57dd260edcf4a, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -93,7 +93,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.75
+  m_ExitTime: 0
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -127,7 +127,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: InventoryCanvas
+  m_Name: ElementWheelButtons
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Hover
@@ -170,7 +170,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: de4ff2cd7a6a3c449a9eaede89e8c2a4, type: 2}
+  m_Motion: {fileID: 7400000, guid: 5b94e427f33d6654d8d789df673fb672, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -187,7 +187,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 9017027811862901477}
-    m_Position: {x: 210, y: 0, z: 0}
+    m_Position: {x: 230, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 174921005423140040}
     m_Position: {x: 230, y: 200, z: 0}
@@ -203,7 +203,7 @@ AnimatorStateMachine:
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: -10, y: -60, z: 0}
-  m_EntryPosition: {x: 220, y: -130, z: 0}
+  m_EntryPosition: {x: 260, y: -120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 9017027811862901477}
@@ -228,7 +228,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: f28fa210f9dd7ec4a944ff76a9e0141e, type: 2}
+  m_Motion: {fileID: 7400000, guid: 4aca140c5bbd1dd42a4aabedd07c462c, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -255,7 +255,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: fee8907bec4b61d459531362114797a2, type: 2}
+  m_Motion: {fileID: 7400000, guid: 9001fe1cf3c83be4aaaaccf3ef2a03ed, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

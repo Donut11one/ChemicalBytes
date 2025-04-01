@@ -1,7 +1,3 @@
-/**
- * 
- */
-
 using UnityEngine;
 
 public class SphereDeleter : MonoBehaviour
@@ -15,6 +11,8 @@ public class SphereDeleter : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q)) // Press Q to delete
         {
             DeleteSphere();
+            Debug.DrawRay(playerCamera.position, playerCamera.forward * deleteRange, Color.red);
+
         }
     }
 

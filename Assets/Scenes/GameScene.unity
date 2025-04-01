@@ -473,12 +473,14 @@ MonoBehaviour:
   jumpKey: 32
   sprintKey: 304
   crouchKey: 306
+  flyToggleKey: 109
   playerHeight: 4
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1024
   orientation: {fileID: 570821420}
   state: 0
+  flySpeed: 5
 --- !u!114 &58423521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,7 +496,7 @@ MonoBehaviour:
   playerCamera: {fileID: 1360266729}
   sphereLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   deleteRange: 10
 --- !u!1 &95151751
 GameObject:
@@ -3928,7 +3930,7 @@ MonoBehaviour:
   bondPrefab: {fileID: 8322642687133844550, guid: 554f86fba604e964994a9d5499e5f8be, type: 3}
   previewPrefab: {fileID: 3324698825121542499, guid: 2e05f1e65d71a094e859f4429be039a5, type: 3}
   playerCamera: {fileID: 1360266729}
-  fixedDistance: 2
+  fixedDistance: 1
   activationRange: 5
 --- !u!1 &1549228881
 GameObject:

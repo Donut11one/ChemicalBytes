@@ -6,87 +6,73 @@ using UnityEngine;
 /// </summary>
 public class PlayerMovement : MonoBehaviour
 {
-    /// <summary>
-    /// The active speed for the player movement (calculated by state).
-    /// </summary>
     [Header("Movement")]
     private float movementSpeed;
 
     // Base walking speed.
     public float walkSpeed;
-
     // Base sprinting speed.
     public float sprintSpeed;
-
     // Drag applied to the Rigidbody when grounded.
     public float groundDrag = 7;
 
     [Header("Jumping")]
     // Force applied to the player when jumping.
     public float jumpForce;
-
     // Cooldown time (seconds) before the player can jump again.
     public float jumpCooldown;
-
     // Multiplier applied when the player is in the air.
     public float airMultiplier;
-
     // Extra force multiplier applied to increase downward speed.
     public float fallMultiplier;
-
     // Extra force multiplier applied when ascending.
     public float ascendingMultiplier;
-
     // True if the player can currently jump.
     bool readyToJump;
 
     [Header("Crouching")]
     // Movement speed when crouching.
     public float crouchSpeed;
-
     // Y-scale of the player while crouched (for lowering the player height).
     public float crouchYScale;
-
     // The original Y-scale of the player before crouching.
     private float startYScale;
 
     [Header("Keybinds")]
     // Key used for jumping (default = Space).
     public KeyCode jumpKey = KeyCode.Space;
-
     // Key used for sprinting (default = Left Shift).
     public KeyCode sprintKey = KeyCode.LeftShift;
-
     // Key used for crouching (default = Left Control).
     public KeyCode crouchKey = KeyCode.LeftControl;
+    // Toggle key for flying mode.
+    public KeyCode flyToggleKey = KeyCode.M;
 
     [Header("Ground Check")]
     // The approximate height of the player, used for ground raycast checks.
     public float playerHeight;
-
     // Layer(s) considered "ground" for the player.
     public LayerMask whatIsGround;
-
     // True if the player is currently grounded.
     bool isGrounded;
 
     // Reference to the player's orientation transform (used for movement direction).
     public Transform orientation;
-
     // Horizontal input value from -1 to 1.
     float horizontalInput;
-
     // Vertical input value from -1 to 1.
     float verticalInput;
-
     // Vector representing the intended movement direction.
     Vector3 movementDirection;
-
     // Reference to the attached Rigidbody component.
     Rigidbody rb;
-
     // The current movement state of the player.
     public MovementState state;
+
+    // New variables for flying mode.
+    public float flySpeed = 5f;  // Constant rate for flying movement.
+    private bool isFlying = false;
+    private float flyVertical = 0f; // Vertical input for flying (1 for up, -1 for down).
 
     /// <summary>
     /// Enumeration of all possible movement states.
@@ -113,139 +99,181 @@ public class PlayerMovement : MonoBehaviour
 
     /// <summary>
     /// Unity's built-in FixedUpdate method, called on physics ticks.
-    /// Handles movement and applies custom gravity.
+    /// Handles movement and applies custom gravity when not flying.
     /// </summary>
     private void FixedUpdate()
     {
         MovePlayer();
-        ApplyJumpGravity();
+        if (!isFlying)
+        {
+            ApplyJumpGravity();
+        }
     }
 
     /// <summary>
-    /// Unity's built-in Update method.  
+    /// Unity's built-in Update method.
     /// Checks if the player is grounded, processes input, handles speed limits, and updates states.
+    /// Also toggles between fly and walking modes.
     /// </summary>
     private void Update()
     {
-        isGrounded = Physics.Raycast(rb.position, Vector3.down, whatIsGround);
-        Debug.Log(rb.position);
+        // Toggle fly mode when M is pressed.
+        if (Input.GetKeyDown(flyToggleKey))
+        {
+            isFlying = !isFlying;
+            rb.useGravity = !isFlying; // Disable built-in gravity in fly mode.
+            Debug.Log("Fly mode: " + isFlying);
+            // Reset vertical velocity when switching modes.
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        }
+
+        // Ground check is not needed in fly mode, but still used for walking.
+        if (!isFlying)
+            isGrounded = Physics.Raycast(rb.position, Vector3.down, playerHeight, whatIsGround);
+
         MyInput();
         SpeedControl();
         StateHandler();
 
-        // handle drag
-        if (isGrounded)
+        // Handle drag (only for walking)
+        if (!isFlying)
         {
-            rb.linearDamping = groundDrag;
-        }
-        else
-        {
-            rb.linearDamping = 0;
+            if (isGrounded)
+            {
+                rb.linearDamping = groundDrag;
+            }
+            else
+            {
+                rb.linearDamping = 0;
+            }
         }
     }
 
     /// <summary>
-    /// Reads user input for movement, jumping, and crouching.
+    /// Reads user input for movement. Processes different inputs for fly mode vs walking.
     /// </summary>
     private void MyInput()
     {
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
 
-        if (Input.GetKey(jumpKey) && readyToJump && isGrounded)
+        if (isFlying)
         {
-            readyToJump = false;
-            Jump();
-            Invoke(nameof(ResetJump), jumpCooldown);
+            // In fly mode, space moves up and left control moves down.
+            flyVertical = 0f;
+            if (Input.GetKey(KeyCode.Space))
+                flyVertical = 1f;
+            if (Input.GetKey(KeyCode.LeftControl))
+                flyVertical = -1f;
         }
-
-        // start crouching
-        if (Input.GetKeyDown(crouchKey))
+        else
         {
-            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
-            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-        }
+            // Walking mode: handle jump and crouch.
+            if (Input.GetKey(jumpKey) && readyToJump && isGrounded)
+            {
+                readyToJump = false;
+                Jump();
+                Invoke(nameof(ResetJump), jumpCooldown);
+            }
 
-        // stop crouching
-        if (Input.GetKeyUp(crouchKey))
-        {
-            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+            if (Input.GetKeyDown(crouchKey))
+            {
+                transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+                rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+            }
+
+            if (Input.GetKeyUp(crouchKey))
+            {
+                transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+            }
         }
     }
 
     /// <summary>
-    /// Determines the player's current movement state (walking, sprinting, crouching, or air).
-    /// Sets the appropriate movement speed.
+    /// Determines the player's current movement state (walking, sprinting, crouching, or air)
+    /// and sets the appropriate movement speed. (Only used for walking mode.)
     /// </summary>
     private void StateHandler()
     {
-        // Mode - Crouching
-        if (Input.GetKey(crouchKey))
+        if (!isFlying)
         {
-            state = MovementState.crouching;
-            movementSpeed = crouchSpeed;
-        }
-
-        // Mode - Sprinting
-        if (isGrounded && Input.GetKey(sprintKey))
-        {
-            state = MovementState.sprinting;
-            movementSpeed = sprintSpeed;
-        }
-
-        // Mode - Walking
-        else if (isGrounded)
-        {
-            state = MovementState.walking;
-            movementSpeed = walkSpeed;
-        }
-
-        // Mode - Air
-        else
-        {
-            state = MovementState.air;
+            if (Input.GetKey(crouchKey))
+            {
+                state = MovementState.crouching;
+                movementSpeed = crouchSpeed;
+            }
+            else if (isGrounded && Input.GetKey(sprintKey))
+            {
+                state = MovementState.sprinting;
+                movementSpeed = sprintSpeed;
+            }
+            else if (isGrounded)
+            {
+                state = MovementState.walking;
+                movementSpeed = walkSpeed;
+            }
+            else
+            {
+                state = MovementState.air;
+            }
         }
     }
 
     /// <summary>
-    /// Applies force to the player Rigidbody for movement on ground or in air.
-    /// If grounded, applies greater force; if in air, uses the air multiplier.
+    /// Moves the player. In walking mode, applies forces based on input.
+    /// In fly mode, directly sets the velocity to a constant rate based on input.
     /// </summary>
     private void MovePlayer()
     {
-        // calculate movement direction
-        // This ensures you always move in the direction you are facing
-        movementDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        if (isFlying)
+        {
+            // Use the camera's forward and right for movement.
+            Vector3 cameraForward = Camera.main.transform.forward;
+            Vector3 cameraRight = Camera.main.transform.right;
 
-        // this applies movement to the player body
-        if (isGrounded)
-        {
-            rb.AddForce(movementDirection.normalized * movementSpeed * 10f, ForceMode.Force);
-        }
-        else if (!isGrounded)
-        {
-            rb.AddForce(movementDirection.normalized * movementSpeed * airMultiplier, ForceMode.Force);
-        }
+            // Calculate movement based on input:
+            // - verticalInput (W/S) and horizontalInput (A/D) follow the camera angle.
+            // - flyVertical (set by Space and Left Control) adds independent vertical movement.
+            Vector3 flyMovement = (cameraForward * verticalInput) + (cameraRight * horizontalInput) + (Vector3.up * flyVertical);
 
-        // if player is grounded and not moving, stop them from sliding
-        if (movementSpeed == 0 && horizontalInput == 0)
+            // Set velocity directly for a constant movement rate.
+            rb.linearVelocity = flyMovement.normalized * flySpeed;
+        }
+        else
         {
-            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
+            // Walking mode: use the orientation (usually constrained to horizontal rotation).
+            movementDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+            if (isGrounded)
+            {
+                rb.AddForce(movementDirection.normalized * movementSpeed * 10f, ForceMode.Force);
+            }
+            else
+            {
+                rb.AddForce(movementDirection.normalized * movementSpeed * airMultiplier, ForceMode.Force);
+            }
+
+            // If the player is grounded and not moving horizontally, stop sliding.
+            if (movementSpeed == 0 && horizontalInput == 0)
+            {
+                rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
+            }
         }
     }
 
+
     /// <summary>
-    /// Restricts the player's velocity to the current movement speed so they cannot exceed their max speed.
+    /// Restricts the player's horizontal velocity to the current movement speed so they cannot exceed their max speed.
     /// </summary>
     private void SpeedControl()
     {
-        Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-
-        // if the player is moving faster than the movement speed, limit it to their max speed
-        if (flatVelocity.magnitude > movementSpeed)
+        if (!isFlying)
         {
-            Vector3 limitedVelocity = flatVelocity.normalized * movementSpeed;
-            rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
+            Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+            if (flatVelocity.magnitude > movementSpeed)
+            {
+                Vector3 limitedVelocity = flatVelocity.normalized * movementSpeed;
+                rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
+            }
         }
     }
 
@@ -254,10 +282,8 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void Jump()
     {
-        // make sure y velocity is 0
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse); // Use ForceMode.Impulse because it applies force immediately
+        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
 
     /// <summary>
@@ -270,10 +296,10 @@ public class PlayerMovement : MonoBehaviour
 
     /// <summary>
     /// Applies custom gravity multipliers for smoother jumping and falling.
+    /// (Not used in fly mode.)
     /// </summary>
     private void ApplyJumpGravity()
     {
-        // Fall: apply our fall multiplier with unity's built in gravity
         if (rb.linearVelocity.y < 0)
         {
             rb.linearVelocity += Vector3.up * Physics.gravity.y * fallMultiplier * Time.fixedDeltaTime;

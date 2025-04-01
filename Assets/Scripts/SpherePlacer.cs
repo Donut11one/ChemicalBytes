@@ -1,25 +1,28 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SpherePlacer : MonoBehaviour
 {
     [Header("Prefabs")]
-    public GameObject spherePrefab;    // Your sphere prefab (ensure it has a collider and is tagged "Sphere")
-    public GameObject bondPrefab;      // A cylinder prefab for the bond
-    public GameObject previewPrefab;   // A semi-transparent preview sphere prefab
+    public GameObject spherePrefab;    // Sphere prefab (should have SphereBondController)
+    public GameObject bondPrefab;      // Cylinder prefab for visual bonds
+    public GameObject previewPrefab;   // Semi‑transparent preview sphere prefab
 
     [Header("Placement Settings")]
-    public Transform playerCamera;     // Reference to the player�s camera (or the object used for aiming)
-    public float fixedDistance = 2f;   // Fixed distance between spheres (and bond length)
-    public float activationRange = 5f; // How close the player must be to a candidate position for the preview to show
+    public Transform playerCamera;     // Reference to the player's camera
+    public float fixedDistance = 2f;   // Distance used for bond offsets (must match SphereBondController)
+    public float activationRange = 5f; // Maximum distance from a candidate node to the camera ray
+    public float maxSpawnDistance = 10f; // Maximum allowed world-space distance from the camera for spawning
 
     // Internal references
     private GameObject currentPreview;
     private GameObject selectedBaseSphere;
+    // This will store the index of the selected free node on the parent.
+    private int selectedNodeIndex = -1;
     private GameObject lastHighlightedSphere;
 
     void Start()
     {
-        // Check if any sphere exists (tagged "Sphere")
+        // If no sphere exists, spawn the initial sphere.
         GameObject[] existingSpheres = GameObject.FindGameObjectsWithTag("Sphere");
         Debug.Log("Number of spheres found: " + existingSpheres.Length);
 
@@ -29,36 +32,33 @@ public class SpherePlacer : MonoBehaviour
             GameObject startingSphere = Instantiate(spherePrefab, Vector3.zero, Quaternion.identity);
             startingSphere.tag = "Sphere";
 
-            // Read the "default" element from wheel script:
-            string DefaultElem = ElementWheelController.Instance.CurrentElement;
-            int DefaultCharge = ElementWheelController.Instance.CurrentCharge;
+            string defaultElem = ElementWheelController.Instance.CurrentElement;
+            int defaultCharge = ElementWheelController.Instance.CurrentCharge;
 
-            // If the starting sphere has an AtomController, update its properties.
             AtomController atomController = startingSphere.GetComponent<AtomController>();
             if (atomController != null)
-            {
-                atomController.SetAtomProperties(DefaultElem, DefaultCharge);
-            }
-
-            // Set the starting sphere's color based on Carbon.
+                atomController.SetAtomProperties(defaultElem, defaultCharge);
             Renderer rend = startingSphere.GetComponent<Renderer>();
             if (rend != null)
+                rend.material.color = GetElementColor(defaultElem);
+
+            // Add a SphereBondController and initialize bond count to 0.
+            SphereBondController sbc = startingSphere.GetComponent<SphereBondController>();
+            if (sbc == null)
             {
-                rend.material.color = GetElementColor(DefaultElem);
+                sbc = startingSphere.AddComponent<SphereBondController>();
+                sbc.fixedDistance = fixedDistance;
             }
+            sbc.bondCount = 0;
         }
     }
-
 
     void Update()
     {
         UpdatePreview();
 
-        // If not paused, allow the user to place a new sphere. If paused do not allow placement.
         if (!PauseMenu.isPaused)
         {
-
-            // When the user presses E, place a new sphere if a valid preview exists.
             if (Input.GetKeyDown(KeyCode.E) && currentPreview != null)
             {
                 PlaceSphere();
@@ -66,186 +66,216 @@ public class SpherePlacer : MonoBehaviour
         }
     }
 
+    // Returns the perpendicular distance from a point to a ray.
+    float DistancePointToRay(Vector3 point, Ray ray)
+    {
+        return Vector3.Magnitude(Vector3.Cross(ray.direction, point - ray.origin));
+    }
+
     /// <summary>
-    /// Checks for nearby spheres and calculates a candidate placement position.
-    /// If a valid candidate is found (closest candidate within activation range),
-    /// updates the preview sphere and highlights the base sphere.
+    /// For every sphere that can accept a new bond (i.e. has free nodes),
+    /// iterate over its nodes (as defined in SphereBondController) and find the candidate node
+    /// whose world position is closest to the camera ray (and within activationRange)
+    /// and within maxSpawnDistance from the camera.
     /// </summary>
     void UpdatePreview()
     {
-        // Variables to track the best candidate hit.
-        float bestT = Mathf.Infinity;
+        Ray ray = new Ray(playerCamera.position, playerCamera.forward);
+        float bestDist = Mathf.Infinity;
         GameObject bestSphere = null;
         Vector3 bestCandidatePos = Vector3.zero;
+        int bestNodeIndex = -1;
 
-        Vector3 rayOrigin = playerCamera.position;
-        Vector3 rayDir = playerCamera.forward;
-
-        // Find all base spheres (make sure they are tagged "Sphere").
         GameObject[] spheres = GameObject.FindGameObjectsWithTag("Sphere");
         foreach (GameObject sphere in spheres)
         {
-            Vector3 center = sphere.transform.position;
-            float R = fixedDistance; // radius of the invisible sphere
-            Vector3 L = center - rayOrigin;
-            float tca = Vector3.Dot(L, rayDir);
+            SphereBondController sbc = sphere.GetComponent<SphereBondController>();
+            if (sbc == null) continue;
+            if (!sbc.HasFreeBond()) continue;
 
-            // If the sphere is behind the camera, skip it.
-            if (tca < 0)
-                continue;
-
-            // Compute the squared distance from the sphere center to the ray.
-            float d2 = Vector3.Dot(L, L) - tca * tca;
-            if (d2 > R * R)
-                continue; // Ray misses the invisible sphere.
-
-            // Compute the distance from the ray to the intersection point.
-            float thc = Mathf.Sqrt(R * R - d2);
-            float t0 = tca - thc;
-            float t1 = tca + thc;
-            float t = t0 >= 0 ? t0 : t1; // choose the smallest positive intersection
-
-            if (t < bestT)
+            // Iterate over all 5 nodes.
+            for (int i = 0; i < sbc.bondPositions.Length; i++)
             {
-                bestT = t;
-                bestSphere = sphere;
-                bestCandidatePos = rayOrigin + rayDir * t;
+                if (sbc.IsBondOccupied(i))
+                    continue;
+                // Compute candidate node's world position.
+                Vector3 candidate = sphere.transform.TransformPoint(sbc.bondPositions[i]);
+                // Check if candidate is within the max spawn distance from the camera.
+                if (Vector3.Distance(playerCamera.position, candidate) > maxSpawnDistance)
+                    continue;
+
+                float dist = DistancePointToRay(candidate, ray);
+                if (dist < bestDist && dist <= activationRange)
+                {
+                    bestDist = dist;
+                    bestSphere = sphere;
+                    bestCandidatePos = candidate;
+                    bestNodeIndex = i;
+                }
             }
         }
 
-        if (bestSphere != null)
+        if (bestSphere != null && bestNodeIndex != -1)
         {
-            // Update or create the preview sphere at the candidate position.
             if (currentPreview == null)
             {
                 currentPreview = Instantiate(previewPrefab, bestCandidatePos, Quaternion.identity);
+                // Disable the preview's collider so it doesn't interfere with deletion raycasts.
+                Collider col = currentPreview.GetComponent<Collider>();
+                if (col != null)
+                    col.enabled = false;
             }
             else
             {
                 currentPreview.transform.position = bestCandidatePos;
             }
             selectedBaseSphere = bestSphere;
+            selectedNodeIndex = bestNodeIndex;
             HighlightSphere(bestSphere);
         }
         else
         {
-            // If no candidate is found, remove the preview and clear the highlight.
             if (currentPreview != null)
-            {
                 Destroy(currentPreview);
-            }
             UnhighlightLastSphere();
             selectedBaseSphere = null;
+            selectedNodeIndex = -1;
         }
     }
 
     /// <summary>
-    /// Called when the user confirms placement. Instantiates the new sphere,
-    /// sets its atom properties and color, and creates a bond.
+    /// Places a new sphere attached to the selected parent's free node.
+    /// The parent's selected node (currentPreview position) is used as the attachment point.
+    /// The new sphere is placed so that its head node (node 0) touches that point.
+    /// The new sphere is rotated so its head faces the parent's node.
+    /// Both spheres' bond counters are updated.
     /// </summary>
     void PlaceSphere()
     {
-        // Instantiate the new sphere at the preview's position.
-        GameObject newSphere = Instantiate(spherePrefab, currentPreview.transform.position, Quaternion.identity);
-        newSphere.tag = "Sphere"; // Ensure it's tagged for future searches
+        // Get parent's SphereBondController.
+        SphereBondController parentSBC = selectedBaseSphere.GetComponent<SphereBondController>();
+        if (parentSBC == null)
+        {
+            parentSBC = selectedBaseSphere.AddComponent<SphereBondController>();
+            parentSBC.fixedDistance = fixedDistance;
+            parentSBC.bondCount = 0;
+        }
+        if (parentSBC.bondCount >= parentSBC.maxBonds)
+        {
+            Debug.LogWarning("Selected base sphere has reached maximum bonds.");
+            return;
+        }
 
-        // 2. Read the current element & charge from the wheel/selector
+        // Get the parent's node world position (the connection point).
+        Vector3 parentCenter = selectedBaseSphere.transform.position;
+        Vector3 parentNodePos = selectedBaseSphere.transform.TransformPoint(parentSBC.bondPositions[selectedNodeIndex]);
+
+        // Mark the parent's selected node as occupied.
+        if (!parentSBC.OccupyBond(selectedNodeIndex))
+        {
+            Debug.LogWarning("Failed to occupy parent's node.");
+            return;
+        }
+
+        // Compute direction from parent's center to the selected node.
+        Vector3 D = (parentNodePos - parentCenter).normalized;
+
+        // For spheres to just touch, the distance between centers should equal 2 * fixedDistance.
+        // Set the new sphere's center to parent's center + 2 * fixedDistance * D.
+        Vector3 newSphereCenter = parentCenter + 2f * fixedDistance * D;
+
+        // Compute the new sphere's rotation.
+        // We want its head node (local position Vector3.up * fixedDistance) to connect to parent's node.
+        // That is, newSphereCenter + newRot*(Vector3.up*fixedDistance) should equal parent's center + fixedDistance*D (i.e. parent's node).
+        // Rearranging, newRot*(Vector3.up*fixedDistance) should equal parent's center + fixedDistance*D - newSphereCenter.
+        // Given newSphereCenter = parent's center + 2*fixedDistance*D, the right‐side becomes:
+        // parent's center + fixedDistance*D - (parent's center + 2*fixedDistance*D) = -fixedDistance*D.
+        // So we want newRot*(Vector3.up*fixedDistance) = -fixedDistance*D,
+        // which is achieved by:
+        Quaternion newRot = Quaternion.FromToRotation(Vector3.up, -D);
+
+        // Instantiate the new sphere at the computed center.
+        GameObject newSphere = Instantiate(spherePrefab, newSphereCenter, newRot);
+        newSphere.tag = "Sphere";
+
+        // Set its element properties.
         string selectedElement = ElementWheelController.Instance.CurrentElement;
         int selectedCharge = ElementWheelController.Instance.CurrentCharge;
-
-        // Set atom properties based on the current selection.
-        // (Make sure your spherePrefab has an AtomController component if needed.)
         AtomController atomController = newSphere.GetComponent<AtomController>();
         if (atomController != null)
-        {
             atomController.SetAtomProperties(selectedElement, selectedCharge);
-        }
+        Renderer newRenderer = newSphere.GetComponent<Renderer>();
+        if (newRenderer != null)
+            newRenderer.material.color = GetElementColor(selectedElement);
 
-        // Change the sphere's color based on the selected element.
-        Renderer newAtomRenderer = newSphere.GetComponent<Renderer>();
-        if (newAtomRenderer != null)
+        // Add a SphereBondController to the new sphere if needed.
+        SphereBondController newSBC = newSphere.GetComponent<SphereBondController>();
+        if (newSBC == null)
         {
-            newAtomRenderer.material.color = GetElementColor(selectedElement);
+            newSBC = newSphere.AddComponent<SphereBondController>();
+            newSBC.fixedDistance = fixedDistance;
         }
+        // For new spheres (other than the initial one), the head node (node 0) is automatically used.
+        newSBC.OccupyBond(0);
+        // Set its bond count to 1 (it is connected to its parent).
+        newSBC.bondCount = 1;
 
-        // Create the bond between the selected base sphere and the new sphere.
-        if (selectedBaseSphere != null && bondPrefab != null)
-        {
-            CreateBond(selectedBaseSphere.transform.position, newSphere.transform.position);
-        }
+        // Create a visual bond.
+        // Per your original design, the cylinder connects the centers.
+        CreateBond(selectedBaseSphere.transform.position, newSphere.transform.position);
 
-        // Clear the preview.
         Destroy(currentPreview);
         currentPreview = null;
         UnhighlightLastSphere();
     }
 
     /// <summary>
-    /// Instantiates a bond (cylinder) connecting two points.
-    /// The cylinder is positioned at the midpoint, aligned along the connecting vector,
-    /// and scaled so that its height equals the fixed distance.
+    /// Creates a visual bond (cylinder) connecting two points.
     /// </summary>
     void CreateBond(Vector3 startPos, Vector3 endPos)
     {
         Vector3 midPoint = (startPos + endPos) / 2;
         GameObject bond = Instantiate(bondPrefab, midPoint, Quaternion.identity);
-
         Vector3 direction = endPos - startPos;
         bond.transform.up = direction.normalized;
-
         Vector3 bondScale = bond.transform.localScale;
-        bondScale.y = fixedDistance / 2f; // Assuming default cylinder height is 2 units.
+        bondScale.y = direction.magnitude / 2f; // Assuming default cylinder height is 2 units.
         bond.transform.localScale = bondScale;
     }
 
-    /// <summary>
-    /// Highlights the provided sphere to indicate that it is the active base for placement.
-    /// This could be done, for example, by modifying its emission color.
-    /// </summary>
     void HighlightSphere(GameObject sphere)
     {
         UnhighlightLastSphere();
-
         Renderer rend = sphere.GetComponent<Renderer>();
         if (rend != null)
-        {
             rend.material.SetColor("_EmissionColor", Color.yellow);
-        }
         lastHighlightedSphere = sphere;
     }
 
-    /// <summary>
-    /// Removes the highlight from the last highlighted sphere.
-    /// </summary>
     void UnhighlightLastSphere()
     {
         if (lastHighlightedSphere != null)
         {
             Renderer rend = lastHighlightedSphere.GetComponent<Renderer>();
             if (rend != null)
-            {
                 rend.material.SetColor("_EmissionColor", Color.black);
-            }
             lastHighlightedSphere = null;
         }
     }
 
-    /// <summary>
-    /// Returns the color corresponding to a given element.
-    /// </summary>
     private Color GetElementColor(string element)
     {
         switch (element)
         {
-            case "C": return new Color(0.5f, 0.5f, 0.5f); // Grey for Carbon
-            case "O": return new Color(1f, 0f, 0f);       // Red for Oxygen
-            case "N": return new Color(0f, 0f, 1f);       // Blue for Nitrogen
-            case "Na": return new Color(1f, 0.5f, 0f);      // Orange for Sodium
-            case "Cl": return new Color(0f, 1f, 0f);        // Green for Chlorine
-            case "S": return new Color(1f, 1f, 0f);         // Yellow for Sulfur
-            case "P": return new Color(1f, 0f, 1f);         // Magenta for Phosphorous
-            case "F": return new Color(0f, 1f, 1f);         // Cyan for Fluorine
-            default: return Color.white;                   // Default to white
+            case "C": return new Color(0.5f, 0.5f, 0.5f);
+            case "O": return new Color(1f, 0f, 0f);
+            case "N": return new Color(0f, 0f, 1f);
+            case "Na": return new Color(1f, 0.5f, 0f);
+            case "Cl": return new Color(0f, 1f, 0f);
+            case "S": return new Color(1f, 1f, 0f);
+            case "P": return new Color(1f, 0f, 1f);
+            case "F": return new Color(0f, 1f, 1f);
+            default: return Color.white;
         }
     }
 }

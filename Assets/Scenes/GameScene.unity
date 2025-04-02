@@ -252,7 +252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementSymbol: Cl
-  elementCharge: -1
+  elementCharge: 1
   icon: {fileID: 21300000, guid: 94b63eb9ecd823c4e8dc22dcb1f25091, type: 3}
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 202419212}
@@ -671,7 +671,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementSymbol: O
-  elementCharge: 0
+  elementCharge: 2
   icon: {fileID: 21300000, guid: 8fe5fe7df700773459e1b000e00973b4, type: 3}
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 202419212}
@@ -1322,7 +1322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementSymbol: P
-  elementCharge: 0
+  elementCharge: 3
   icon: {fileID: 21300000, guid: e0af6db6e8e56ab489a46434d21df50c, type: 3}
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 202419212}
@@ -1681,7 +1681,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementSymbol: C
-  elementCharge: 0
+  elementCharge: 4
   icon: {fileID: 21300000, guid: 07aa1aeafe34d88499e9ad26b83e8ed9, type: 3}
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 202419212}
@@ -2110,7 +2110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementSymbol: S
-  elementCharge: 0
+  elementCharge: 2
   icon: {fileID: 21300000, guid: 3813e28e159e7434ba86a3c81d29b065, type: 3}
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 202419212}
@@ -2717,7 +2717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementSymbol: F
-  elementCharge: 0
+  elementCharge: 1
   icon: {fileID: 21300000, guid: 99dff8fb8424680419bfaafff9db90a8, type: 3}
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 202419212}
@@ -4344,7 +4344,7 @@ GameObject:
   - component: {fileID: 1391040706}
   - component: {fileID: 1391040707}
   m_Layer: 0
-  m_Name: SphereManager
+  m_Name: SpherePlacer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4377,6 +4377,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67219299843ad443b9d6003129024e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  molecularBuilder: {fileID: 1916137377}
+  currentBondType: 0
+  bondTypeIndex: 0
   spherePrefab: {fileID: 4566075121331663613, guid: 1d85050b6859c81459f63de6b5b4a5b2, type: 3}
   bondPrefab: {fileID: 8322642687133844550, guid: 554f86fba604e964994a9d5499e5f8be, type: 3}
   previewPrefab: {fileID: 3324698825121542499, guid: 2e05f1e65d71a094e859f4429be039a5, type: 3}
@@ -5365,6 +5368,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1916137376}
+  - component: {fileID: 1916137377}
   m_Layer: 0
   m_Name: MoleculeBuilder
   m_TagString: Untagged
@@ -5387,6 +5391,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1916137377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1916137375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7d05313793455b42920a98d8df963cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spheres: []
+  bonds: []
 --- !u!1 &1929776402
 GameObject:
   m_ObjectHideFlags: 0
@@ -5721,7 +5739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementSymbol: N
-  elementCharge: 0
+  elementCharge: 3
   icon: {fileID: 21300000, guid: 4559f001b3f27f045a3f13f0dab717cd, type: 3}
   itemNameText: {fileID: 805101806}
   selectedItem: {fileID: 202419212}

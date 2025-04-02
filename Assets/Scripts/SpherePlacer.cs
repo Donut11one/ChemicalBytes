@@ -78,7 +78,7 @@ public class SpherePlacer : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E) && currentPreview != null)
             {
                 PlaceSphere();
-                molecularBuilder.DisplayMolecularFormula();
+                molecularBuilder.DisplaySMILES();
             }
             // Mouse wheel input to change bond type
             float scroll = Input.GetAxis("Mouse ScrollWheel");

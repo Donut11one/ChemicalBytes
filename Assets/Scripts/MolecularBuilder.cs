@@ -17,64 +17,74 @@ public class MolecularBuilder : MonoBehaviour
         bonds.Add(bond);
     }
 
-    public string GetMolecularFormula()
+    public string GenerateSMILES()
     {
-        Dictionary<string, int> elementCounts = new Dictionary<string, int>();
-        int totalHydrogens = 0; // Directly sum up hydrogens
+        Dictionary<AtomController, List<AtomController>> adjacencyList = GetAdjacencyList();
+        HashSet<AtomController> visited = new HashSet<AtomController>();
+        string smiles = "";
+
+        if (adjacencyList.Count > 0)
+        {
+            AtomController startAtom = findCentralAtom(adjacencyList);
+            smiles = DFSSmiles(startAtom, adjacencyList, visited, "");
+        }
+
+        return smiles;
+    }
+
+    string DFSSmiles(AtomController currentAtom, Dictionary<AtomController, List<AtomController>> adjacencyList, HashSet<AtomController> visited, string currentSmiles, AtomController parentAtom = null)
+    {
+        visited.Add(currentAtom);
+        currentSmiles += currentAtom.element;
+
+        List<AtomController> neighbors = adjacencyList[currentAtom].Where(neighbor => !visited.Contains(neighbor) && neighbor != parentAtom).ToList();
+
+        // Sort neighbors by the number of connections.
+        neighbors.Sort((a, b) => adjacencyList[b].Count - adjacencyList[a].Count);
+
+        foreach (AtomController neighbor in neighbors)
+        {
+            currentSmiles += "(";
+            currentSmiles = DFSSmiles(neighbor, adjacencyList, visited, currentSmiles, currentAtom);
+            currentSmiles += ")";
+        }
+
+        return currentSmiles;
+    }
+
+    public Dictionary<AtomController, List<AtomController>> GetAdjacencyList()
+    {
+        Dictionary<AtomController, List<AtomController>> adjacencyList = new Dictionary<AtomController, List<AtomController>>();
 
         foreach (GameObject sphere in spheres)
         {
             AtomController atom = sphere.GetComponent<AtomController>();
             if (atom != null)
             {
-                if (atom.element != "H") // Skip hydrogen counting.
-                {
-                    if (elementCounts.ContainsKey(atom.element))
-                    {
-                        elementCounts[atom.element]++;
-                    }
-                    else
-                    {
-                        elementCounts[atom.element] = 1;
-                    }
-
-                    // Calculate hydrogen based on formal charge.
-                    int bonds = atom.connectedAtoms.Count;
-                    int impliedHydrogens = Mathf.Max(0, atom.valency - bonds);
-                    totalHydrogens += impliedHydrogens; // Sum up hydrogens directly
-                }
+                adjacencyList[atom] = atom.connectedAtoms;
             }
         }
 
-        var sortedElements = elementCounts.Keys.OrderBy(element => element);
-
-        string formula = "";
-
-        foreach (string element in sortedElements)
+        return adjacencyList;
+    }
+    AtomController findCentralAtom(Dictionary<AtomController,List<AtomController>> adjacencyList)
+    {
+        AtomController centralAtom = adjacencyList.Keys.First();
+        int maxConnections = adjacencyList[centralAtom].Count;
+        foreach(AtomController atom in adjacencyList.Keys)
         {
-            formula += element;
-            if (elementCounts[element] > 1)
+            if (adjacencyList[atom].Count > maxConnections)
             {
-                formula += elementCounts[element];
+                centralAtom = atom;
+                maxConnections = adjacencyList[atom].Count;
             }
         }
-
-        if (totalHydrogens > 0)
-        {
-            formula += "H";
-            if (totalHydrogens > 1)
-            {
-                formula += totalHydrogens;
-            }
-        }
-
-        return formula;
+        return centralAtom;
     }
 
-
-    public void DisplayMolecularFormula()
+    public void DisplaySMILES()
     {
-        string formula = GetMolecularFormula();
-        Debug.Log("Molecular Formula: " + formula);
+        string smiles = GenerateSMILES();
+        Debug.Log("SMILES: " + smiles);
     }
 }

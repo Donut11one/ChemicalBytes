@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class SpherePlacer : MonoBehaviour
 { 
@@ -18,12 +19,23 @@ public class SpherePlacer : MonoBehaviour
     public float activationRange = 5f;   // Maximum distance from a candidate node to the camera ray
     public float maxSpawnDistance = 10f; // Maximum allowed world-space distance from the camera for spawning
 
+    [Header("Keybinds")]
+    // Key used for placing a bond (default = E).
+    public KeyCode placeElementandBond = KeyCode.E;
+    // Key used for clearing all moleculars and bonds (default = Delete).
+    public KeyCode clearCanvasKey = KeyCode.Delete;
+
+    [Header("Audio")]
+    public AudioSource placeSphereSound;
+    public AudioSource clearCanvasSound;
+
     // Internal references
     private GameObject currentPreview;
     private GameObject selectedBaseSphere;
     // This will store the index of the selected free node on the parent.
     private int selectedNodeIndex = -1;
     private GameObject lastHighlightedSphere;
+    private GameObject startingSphere;
 
     void Start()
     {
@@ -39,7 +51,7 @@ public class SpherePlacer : MonoBehaviour
         if (existingSpheres.Length == 0)
         {
             Debug.Log("No spheres found. Spawning initial sphere at (0,0,0).");
-            GameObject startingSphere = Instantiate(spherePrefab, Vector3.zero, Quaternion.identity);
+            startingSphere = Instantiate(spherePrefab, Vector3.zero, Quaternion.identity);
             startingSphere.tag = "Sphere";
             startingSphere.layer = LayerMask.NameToLayer("DefaultSphere");
 
@@ -76,7 +88,7 @@ public class SpherePlacer : MonoBehaviour
 
         if (!PauseMenu.isPaused)
         {
-            if (Input.GetKeyDown(KeyCode.E) && currentPreview != null)
+            if (Input.GetKeyDown(placeElementandBond) && currentPreview != null)
             {
                 PlaceSphere();
                 molecularBuilder.DisplaySMILES();
@@ -99,6 +111,11 @@ public class SpherePlacer : MonoBehaviour
                 currentBondType = (BondType)bondTypeIndex;
 
                 Debug.Log("Current Bond Type: " + currentBondType); // Optional debug log
+            }
+
+            if (Input.GetKeyDown(clearCanvasKey))
+            {
+                ClearAllGeneratedObjects();
             }
         }
 
@@ -262,6 +279,14 @@ public class SpherePlacer : MonoBehaviour
             parentAtom.AddConnection(childAtom, currentBondType);
         }
 
+        if (placeSphereSound != null)
+        {
+            placeSphereSound.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Place Sphere sound is not assigned!");
+        }
         // Cleanup preview and unhighlight
         Destroy(currentPreview);
         currentPreview = null;
@@ -371,5 +396,69 @@ public class SpherePlacer : MonoBehaviour
             case "F": return new Color(0f, 1f, 1f);
             default: return Color.white;
         }
+    }
+
+    private void ClearAllGeneratedObjects()
+    {
+        // Destroy all spheres except the default sphere
+        GameObject[] spheres = GameObject.FindGameObjectsWithTag("Sphere");
+        foreach (GameObject sphere in spheres)
+        {
+            if (sphere.layer == LayerMask.NameToLayer("DefaultSphere"))
+            {
+                startingSphere = sphere;
+                continue;
+            }
+
+            MolecularBuilder mb = Object.FindAnyObjectByType<MolecularBuilder>();
+            if (mb != null)
+            {
+                mb.RemoveSphere(sphere); // Implement this method if you want to clean up the list.
+            }
+
+            Destroy(sphere);
+        }
+
+        // Destroy all bonds
+        GameObject[] bonds = GameObject.FindGameObjectsWithTag("Bond");
+        foreach (GameObject bond in bonds)
+        {
+            Destroy(bond);
+        }
+
+        // Reset preview
+        if (currentPreview != null)
+        {
+            Destroy(currentPreview);
+            currentPreview = null;
+        }
+
+        // Reset default sphere's state
+        if (startingSphere != null)
+        {
+            SphereBondController sbc = startingSphere.GetComponent<SphereBondController>();
+            if (sbc != null)
+            {
+                sbc.ClearAllBonds();
+            }
+            selectedBaseSphere = null;
+            selectedNodeIndex = -1;
+        }
+
+        if (clearCanvasSound != null)
+        {
+            foreach (GameObject bond in bonds)
+            {
+                clearCanvasSound.Play();
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Place Sphere sound is not assigned!");
+        }
+
+        UnhighlightLastSphere();
+
+        Debug.Log("Cleared all non-default spheres and reset default sphere.");
     }
 }

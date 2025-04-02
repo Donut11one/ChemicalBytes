@@ -131,7 +131,10 @@ public class PlayerMovement : MonoBehaviour
         if (!isFlying)
             isGrounded = Physics.Raycast(rb.position, Vector3.down, playerHeight, whatIsGround);
 
-        isGrounded = Physics.Raycast(rb.position, Vector3.down, whatIsGround);
+        if (!isFlying)
+        {
+            isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+        }
         MyInput();
         SpeedControl();
         StateHandler();
@@ -170,13 +173,19 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             // Walking mode: handle jump and crouch.
-            if (Input.GetKey(jumpKey) && readyToJump && isGrounded)
+            if (Input.GetKey(jumpKey) && isGrounded && readyToJump)
             {
-                readyToJump = false;
                 Jump();
+                readyToJump = false;
+            }
+            
+            if (isGrounded && !readyToJump)
+            {
                 Invoke(nameof(ResetJump), jumpCooldown);
+
             }
 
+            // Crouch logic
             if (Input.GetKeyDown(crouchKey))
             {
                 transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);

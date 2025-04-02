@@ -5,6 +5,7 @@ public class SphereDeleter : MonoBehaviour
     public Transform playerCamera; // Assign the player's camera in the Inspector
     public LayerMask sphereLayer;  // Assign the "Spheres" layer in the Inspector
     public float deleteRange = 10f;  // Max distance for deleting spheres
+    public AudioSource deleteSound;  // Assign the delete sound in the Inspector
 
     void Update()
     {
@@ -63,6 +64,10 @@ public class SphereDeleter : MonoBehaviour
                     mb.RemoveSphere(target); // Implement this method if you want to clean up the list.
                 }
 
+                if (deleteSound != null)
+                {
+                    deleteSound.Play();
+                }
                 // Finally, delete the sphere.
                 Destroy(target);
             }

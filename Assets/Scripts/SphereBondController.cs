@@ -58,4 +58,13 @@ public class SphereBondController : MonoBehaviour
         bondCount++;
         return true;
     }
+
+    public void ClearAllBonds()
+    {
+        for (int i = 0; i < bondOccupied.Length; i++)
+        {
+            bondOccupied[i] = false;
+        }
+        bondCount = 0;
+    }
 }

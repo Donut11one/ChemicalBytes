@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 5519794522304075065}
   - component: {fileID: 8889120680926254256}
   - component: {fileID: 3839779027198219299}
-  - component: {fileID: 8892231322460390158}
-  - component: {fileID: -5770501255313429128}
+  - component: {fileID: 5610759724413787339}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -30,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.78999996, y: -2.8, z: 7.905}
-  m_LocalScale: {x: 0.2, y: 0.5, z: 0.2}
+  m_LocalScale: {x: 0.15, y: 0.5, z: 0.15}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -88,30 +87,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &8892231322460390158
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8322642687133844550}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &-5770501255313429128
+--- !u!114 &5610759724413787339
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,7 +99,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a309e3c4dede2ab408d99b089b519f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sphereA: {fileID: 0}
-  sphereB: {fileID: 0}
-  nodeIndexA: 0
-  nodeIndexB: 0
+  BondNumber: 0

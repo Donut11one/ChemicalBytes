@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class SphereBondController : MonoBehaviour
 {
+
     public int bondCount = 0;      // Total bonds currently connected.
-    public int maxBonds = 4;       // Maximum bonds allowed.
     public float fixedDistance = 2f;  // Distance from center to each node.
     
+    public int maxBonds;       // Maximum bonds allowed.
     // Predefined local positions for the 5 nodes.
     public Vector3[] bondPositions;
     // Tracks which nodes are already occupied.
     public bool[] bondOccupied;
-
     void Awake()
     {
         // Initialize arrays for 5 nodes.
@@ -33,6 +33,10 @@ public class SphereBondController : MonoBehaviour
         {
             bondOccupied[i] = false;
         }
+    }
+    public void setProperties(int bonds)
+    {
+        maxBonds = bonds;
     }
 
     public bool HasFreeBond()

@@ -1,13 +1,16 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+public enum BondType { Single, Double, Triple }
+
 public class AtomController : MonoBehaviour
 {
     public string element;
-    public int formalCharge = 0;
+    public int valency;
     public bool isSelected = false;
-    public List<AtomController> connectedAtoms = new List<AtomController>(); // List of connected atoms
-    public List<int> bondTypes = new List<int>(); // List of bond types for each connection
+
+    public List<AtomController> connectedAtoms = new List<AtomController>();
+    public List<BondType> bondTypes = new List<BondType>(); // Use BondType enum
 
     private Renderer atomRenderer;
 
@@ -19,25 +22,24 @@ public class AtomController : MonoBehaviour
     public void SelectAtom(bool select)
     {
         isSelected = select;
-        if (isSelected)
-        {
-            atomRenderer.material.color = Color.yellow;
-        }
-        else
-        {
-            atomRenderer.material.color = Color.white;
-        }
+        atomRenderer.material.color = isSelected ? Color.yellow : Color.white;
     }
 
     public void SetAtomProperties(string elem, int charge)
-    {
+    {        
         element = elem;
-        formalCharge = charge;
+        valency = charge;
     }
 
-    public void AddConnection(AtomController otherAtom, int bondType)
+    public void AddConnection(AtomController otherAtom, BondType bondType) // Accept BondType
     {
-        connectedAtoms.Add(otherAtom);
-        bondTypes.Add(bondType);
+        if (!connectedAtoms.Contains(otherAtom))
+        {
+            connectedAtoms.Add(otherAtom);
+            bondTypes.Add(bondType);
+            otherAtom.connectedAtoms.Add(this);
+            otherAtom.bondTypes.Add(bondType);
+            valency -= 1;
+        }
     }
 }

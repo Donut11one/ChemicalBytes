@@ -14,14 +14,14 @@ public class SpawnerScript : MonoBehaviour
     void Update()
     {
         // Change atom type when a number key is pressed
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SetAtomType("C", 0); // Carbon
-        if (Input.GetKeyDown(KeyCode.Alpha2)) SetAtomType("O", 0); // Oxygen
-        if (Input.GetKeyDown(KeyCode.Alpha3)) SetAtomType("N", 0); // Nitrogen
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SetAtomType("C", 4); // Carbon
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SetAtomType("O", 2); // Oxygen
+        if (Input.GetKeyDown(KeyCode.Alpha3)) SetAtomType("N", 3); // Nitrogen
         if (Input.GetKeyDown(KeyCode.Alpha4)) SetAtomType("Na", 1); // Sodium +1
-        if (Input.GetKeyDown(KeyCode.Alpha5)) SetAtomType("Cl", -1); // Chlorine -1
-        if (Input.GetKeyDown(KeyCode.Alpha6)) SetAtomType("S", 0); // Sulfur
-        if (Input.GetKeyDown(KeyCode.Alpha7)) SetAtomType("P", 0); // Phosphorous
-        if (Input.GetKeyDown(KeyCode.Alpha8)) SetAtomType("F", 0); // Fluorine
+        if (Input.GetKeyDown(KeyCode.Alpha5)) SetAtomType("Cl", 1); // Chlorine -1
+        if (Input.GetKeyDown(KeyCode.Alpha6)) SetAtomType("S", 2); // Sulfur
+        if (Input.GetKeyDown(KeyCode.Alpha7)) SetAtomType("P", 3); // Phosphorous
+        if (Input.GetKeyDown(KeyCode.Alpha8)) SetAtomType("F", 1); // Fluorine
 
         // Spawn atom when E is pressed
         if (Input.GetKeyDown(KeyCode.E))

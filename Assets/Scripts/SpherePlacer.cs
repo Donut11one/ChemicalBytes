@@ -1,16 +1,21 @@
 ﻿using UnityEngine;
 
 public class SpherePlacer : MonoBehaviour
-{
+{ 
+    public MolecularBuilder molecularBuilder;
+    public BondType currentBondType = BondType.Single;
+    public int bondTypeIndex = 0; // Index to cycle through bond types
+
+
     [Header("Prefabs")]
-    public GameObject spherePrefab;    // Sphere prefab (should have SphereBondController)
-    public GameObject bondPrefab;      // Cylinder prefab for visual bonds
-    public GameObject previewPrefab;   // Semi‑transparent preview sphere prefab
+    public GameObject spherePrefab;      // Sphere prefab (should have SphereBondController)
+    public GameObject bondPrefab;        // Cylinder prefab for visual bonds
+    public GameObject previewPrefab;     // Semi‑transparent preview sphere prefab
 
     [Header("Placement Settings")]
-    public Transform playerCamera;     // Reference to the player's camera
-    public float fixedDistance = 2f;   // Distance used for bond offsets (must match SphereBondController)
-    public float activationRange = 5f; // Maximum distance from a candidate node to the camera ray
+    public Transform playerCamera;       // Reference to the player's camera
+    public float fixedDistance = 2f;     // Distance used for bond offsets (must match SphereBondController)
+    public float activationRange = 5f;   // Maximum distance from a candidate node to the camera ray
     public float maxSpawnDistance = 10f; // Maximum allowed world-space distance from the camera for spawning
 
     // Internal references
@@ -22,6 +27,11 @@ public class SpherePlacer : MonoBehaviour
 
     void Start()
     {
+        if (molecularBuilder == null)
+        {
+            Debug.LogError("MolecularBuilder is not assigned in the Inspector! Disabling SpherePlacer.");
+            return;
+        }
         // If no sphere exists, spawn the initial sphere.
         GameObject[] existingSpheres = GameObject.FindGameObjectsWithTag("Sphere");
         Debug.Log("Number of spheres found: " + existingSpheres.Length);
@@ -35,9 +45,13 @@ public class SpherePlacer : MonoBehaviour
             string defaultElem = ElementWheelController.Instance.CurrentElement;
             int defaultCharge = ElementWheelController.Instance.CurrentCharge;
 
+
             AtomController atomController = startingSphere.GetComponent<AtomController>();
             if (atomController != null)
+            {
                 atomController.SetAtomProperties(defaultElem, defaultCharge);
+            }
+                
             Renderer rend = startingSphere.GetComponent<Renderer>();
             if (rend != null)
                 rend.material.color = GetElementColor(defaultElem);
@@ -49,7 +63,9 @@ public class SpherePlacer : MonoBehaviour
                 sbc = startingSphere.AddComponent<SphereBondController>();
                 sbc.fixedDistance = fixedDistance;
             }
+            sbc.maxBonds = defaultCharge;
             sbc.bondCount = 0;
+            molecularBuilder.AddSphere(startingSphere);
         }
     }
 
@@ -62,8 +78,29 @@ public class SpherePlacer : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E) && currentPreview != null)
             {
                 PlaceSphere();
+                molecularBuilder.DisplayMolecularFormula();
+            }
+            // Mouse wheel input to change bond type
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+            if (scroll != 0)
+            {
+                if (scroll > 0) // Scroll up
+                {
+                    bondTypeIndex++;
+                }
+                else // Scroll down
+                {
+                    bondTypeIndex--;
+                }
+
+                // Cycle through bond types
+                bondTypeIndex = Mathf.Clamp(bondTypeIndex, 0, System.Enum.GetValues(typeof(BondType)).Length - 1);
+                currentBondType = (BondType)bondTypeIndex;
+
+                Debug.Log("Current Bond Type: " + currentBondType); // Optional debug log
             }
         }
+
     }
 
     // Returns the perpendicular distance from a point to a ray.
@@ -152,36 +189,29 @@ public class SpherePlacer : MonoBehaviour
     /// </summary>
     void PlaceSphere()
     {
-        // Get parent's SphereBondController.
+        // Retrieve the SphereBondController from the selected base sphere
         SphereBondController parentSBC = selectedBaseSphere.GetComponent<SphereBondController>();
-        if (parentSBC == null)
+        if (parentSBC == null || parentSBC.bondCount >= parentSBC.maxBonds)
         {
-            parentSBC = selectedBaseSphere.AddComponent<SphereBondController>();
-            parentSBC.fixedDistance = fixedDistance;
-            parentSBC.bondCount = 0;
-        }
-        if (parentSBC.bondCount >= parentSBC.maxBonds)
-        {
-            Debug.LogWarning("Selected base sphere has reached maximum bonds.");
+            Debug.LogWarning("Cannot place sphere: No available bonds on parent sphere.");
             return;
         }
 
-        // Get the parent's node world position (the connection point).
+        // Get the parent's node world position (the connection point)
         Vector3 parentCenter = selectedBaseSphere.transform.position;
         Vector3 parentNodePos = selectedBaseSphere.transform.TransformPoint(parentSBC.bondPositions[selectedNodeIndex]);
 
-        // Mark the parent's selected node as occupied.
+        // Attempt to mark the selected node as occupied
         if (!parentSBC.OccupyBond(selectedNodeIndex))
         {
             Debug.LogWarning("Failed to occupy parent's node.");
             return;
         }
 
-        // Compute direction from parent's center to the selected node.
+        // Compute direction from parent's center to the selected node
         Vector3 D = (parentNodePos - parentCenter).normalized;
 
-        // For spheres to just touch, the distance between centers should equal 2 * fixedDistance.
-        // Set the new sphere's center to parent's center + 2 * fixedDistance * D.
+        // Compute the new sphere's center position
         Vector3 newSphereCenter = parentCenter + 2f * fixedDistance * D;
 
         // Compute the new sphere's rotation.
@@ -194,11 +224,11 @@ public class SpherePlacer : MonoBehaviour
         // which is achieved by:
         Quaternion newRot = Quaternion.FromToRotation(Vector3.up, -D);
 
-        // Instantiate the new sphere at the computed center.
+        // Instantiate the new sphere at the computed position and rotation
         GameObject newSphere = Instantiate(spherePrefab, newSphereCenter, newRot);
         newSphere.tag = "Sphere";
 
-        // Set its element properties.
+        // Set its element properties
         string selectedElement = ElementWheelController.Instance.CurrentElement;
         int selectedCharge = ElementWheelController.Instance.CurrentCharge;
         AtomController atomController = newSphere.GetComponent<AtomController>();
@@ -208,31 +238,38 @@ public class SpherePlacer : MonoBehaviour
         if (newRenderer != null)
             newRenderer.material.color = GetElementColor(selectedElement);
 
-        // Add a SphereBondController to the new sphere if needed.
+        // Add a SphereBondController to the new sphere if needed
         SphereBondController newSBC = newSphere.GetComponent<SphereBondController>();
         if (newSBC == null)
         {
             newSBC = newSphere.AddComponent<SphereBondController>();
             newSBC.fixedDistance = fixedDistance;
         }
-        // For new spheres (other than the initial one), the head node (node 0) is automatically used.
-        newSBC.OccupyBond(0);
-        // Set its bond count to 1 (it is connected to its parent).
-        newSBC.bondCount = 1;
+        newSBC.OccupyBond(0); // Occupy the head node (node 0)
+        newSBC.bondCount = 1; // Set bond count to 1
 
-        // Create a visual bond.
-        // Per your original design, the cylinder connects the centers.
-        CreateBond(selectedBaseSphere.transform.position, newSphere.transform.position);
+        // Create a visual bond between the parent and the new sphere
+        GameObject newBond = CreateBond(selectedBaseSphere.transform.position, newSphere.transform.position);
+        molecularBuilder.AddSphere(newSphere); // Add to MolecularBuilder
+        molecularBuilder.AddBond(newBond); // Add bond to MolecularBuilder
+        AtomController parentAtom = selectedBaseSphere.GetComponent<AtomController>();
+        AtomController childAtom = newSphere.GetComponent<AtomController>();
+        if (parentAtom != null && childAtom != null)
+        {
+            parentAtom.AddConnection(childAtom, currentBondType);
+        }
 
+        // Cleanup preview and unhighlight
         Destroy(currentPreview);
         currentPreview = null;
         UnhighlightLastSphere();
     }
 
+
     /// <summary>
     /// Creates a visual bond (cylinder) connecting two points.
     /// </summary>
-    void CreateBond(Vector3 startPos, Vector3 endPos)
+    GameObject CreateBond(Vector3 startPos, Vector3 endPos)
     {
         Vector3 midPoint = (startPos + endPos) / 2;
         GameObject bond = Instantiate(bondPrefab, midPoint, Quaternion.identity);
@@ -241,6 +278,7 @@ public class SpherePlacer : MonoBehaviour
         Vector3 bondScale = bond.transform.localScale;
         bondScale.y = direction.magnitude / 2f; // Assuming default cylinder height is 2 units.
         bond.transform.localScale = bondScale;
+        return bond;
     }
 
     void HighlightSphere(GameObject sphere)

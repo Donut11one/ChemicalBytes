@@ -12,7 +12,7 @@ public class ElementWheelController : MonoBehaviour
 
     // These will be used by the spawner script to determine which element to spawn
     public string CurrentElement { get; private set; } = "C"; // Default element is Carbon
-    public int CurrentCharge { get; private set; } = 0; // Default charge is 0
+    public int CurrentCharge { get; private set; } = 4; // Default charge is 4
 
     public Animator anim;
     public Image selectedItem;
@@ -35,7 +35,7 @@ public class ElementWheelController : MonoBehaviour
     {
         CurrentElement = elementSymbol;
         CurrentCharge = charge;
-        Debug.Log("SetElement: " + CurrentElement + " (charge " + charge + ")");
+        Debug.Log("SetElement: " + CurrentElement + " (valency " + CurrentCharge + ")");
 
         // This is purely for visual feedback for the keyboard input
         selectedItem.sprite = GetElementSprite(elementSymbol);
@@ -70,14 +70,14 @@ public class ElementWheelController : MonoBehaviour
         {
 
             // Numerical key equip your element
-            if (Input.GetKeyDown(KeyCode.Alpha1)) SetElement("C", 0);
-            if (Input.GetKeyDown(KeyCode.Alpha2)) SetElement("O", 0);
-            if (Input.GetKeyDown(KeyCode.Alpha3)) SetElement("N", 0);
+            if (Input.GetKeyDown(KeyCode.Alpha1)) SetElement("C", 4);
+            if (Input.GetKeyDown(KeyCode.Alpha2)) SetElement("O", 2);
+            if (Input.GetKeyDown(KeyCode.Alpha3)) SetElement("N", 3);
             if (Input.GetKeyDown(KeyCode.Alpha4)) SetElement("Na", 1);
-            if (Input.GetKeyDown(KeyCode.Alpha5)) SetElement("Cl", -1);
-            if (Input.GetKeyDown(KeyCode.Alpha6)) SetElement("S", 0);
-            if (Input.GetKeyDown(KeyCode.Alpha7)) SetElement("P", 0);
-            if (Input.GetKeyDown(KeyCode.Alpha8)) SetElement("F", 0);
+            if (Input.GetKeyDown(KeyCode.Alpha5)) SetElement("Cl", 1);
+            if (Input.GetKeyDown(KeyCode.Alpha6)) SetElement("S", 2);
+            if (Input.GetKeyDown(KeyCode.Alpha7)) SetElement("P", 3);
+            if (Input.GetKeyDown(KeyCode.Alpha8)) SetElement("F", 1);
         }
 
         // Open menu on KeyDown

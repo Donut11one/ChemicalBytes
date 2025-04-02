@@ -41,6 +41,7 @@ public class SpherePlacer : MonoBehaviour
             Debug.Log("No spheres found. Spawning initial sphere at (0,0,0).");
             GameObject startingSphere = Instantiate(spherePrefab, Vector3.zero, Quaternion.identity);
             startingSphere.tag = "Sphere";
+            startingSphere.layer = LayerMask.NameToLayer("DefaultSphere");
 
             string defaultElem = ElementWheelController.Instance.CurrentElement;
             int defaultCharge = ElementWheelController.Instance.CurrentCharge;
@@ -250,7 +251,8 @@ public class SpherePlacer : MonoBehaviour
         newSBC.maxBonds = selectedCharge;
 
         // Create a visual bond between the parent and the new sphere
-        GameObject newBond = CreateBond(selectedBaseSphere.transform.position, newSphere.transform.position);
+        GameObject newBond = CreateBond(selectedBaseSphere, newSphere, selectedBaseSphere.transform.position, newSphere.transform.position, selectedNodeIndex, 0);
+        molecularBuilder.AddBond(newBond);
         molecularBuilder.AddSphere(newSphere); // Add to MolecularBuilder
         molecularBuilder.AddBond(newBond); // Add bond to MolecularBuilder
         AtomController parentAtom = selectedBaseSphere.GetComponent<AtomController>();
@@ -270,49 +272,70 @@ public class SpherePlacer : MonoBehaviour
     /// <summary>
     /// Creates a visual bond (cylinder) connecting two points.
     /// </summary>
-    GameObject CreateBond(Vector3 startPos, Vector3 endPos)
+    GameObject CreateBond(GameObject sphereA, GameObject sphereB, Vector3 startPos, Vector3 endPos, int nodeIndexA, int nodeIndexB)
     {
-        int totalbonds = (int)currentBondType;
+        int totalBonds = (int)currentBondType;
+        int numCylinders = totalBonds + 1;
+
         Vector3 direction = endPos - startPos;
         float bondLength = direction.magnitude;
         Vector3 bondDirection = direction.normalized;
 
+        // Create a parent GameObject to hold all the cylinders.
         GameObject parentBond = new GameObject("BondGroup");
         parentBond.transform.position = (startPos + endPos) / 2f;
         parentBond.transform.up = bondDirection;
 
+        // We'll use an offset for double/triple bonds so the cylinders don't overlap.
         float offset = 0.3f;
-
-        Vector3 offsetDirection = Vector3.Cross(bondDirection, Vector3.up).normalized; // Perpendicular vector.
+        Vector3 offsetDirection = Vector3.Cross(bondDirection, Vector3.up).normalized;
         if (offsetDirection == Vector3.zero)
         {
-            offsetDirection = Vector3.Cross(bondDirection, Vector3.forward).normalized; // Alternative perpendicular vector.
+            offsetDirection = Vector3.Cross(bondDirection, Vector3.forward).normalized;
         }
 
-        for (int i = 0; i < totalbonds+1; i++)
+        for (int i = 0; i < numCylinders; i++)
         {
             Vector3 bondPositionOffset = Vector3.zero;
-
-            if (totalbonds == 1)
+            if (numCylinders == 2)
             {
+                // For a double bond, place one cylinder slightly left and one right.
                 bondPositionOffset = offsetDirection * (i == 0 ? -offset / 2f : offset / 2f);
             }
-            else if (totalbonds == 2)
+            else if (numCylinders == 3)
             {
-                bondPositionOffset = offsetDirection * (i - 1) * offset;
+                // For a triple bond, place cylinders at -offset, 0, and offset.
+                if (i == 0)
+                    bondPositionOffset = offsetDirection * -offset;
+                else if (i == 1)
+                    bondPositionOffset = Vector3.zero;
+                else if (i == 2)
+                    bondPositionOffset = offsetDirection * offset;
             }
+            // For a single bond (numCylinders==1) bondPositionOffset remains zero.
 
             GameObject bond = Instantiate(bondPrefab, parentBond.transform.position, Quaternion.identity, parentBond.transform);
             bond.transform.localPosition = bondPositionOffset;
             bond.transform.up = bondDirection;
-
             Vector3 bondScale = bond.transform.localScale;
-            bondScale.y = bondLength / 2f;
+            bondScale.y = bondLength / 2f; // Assuming your bond prefab is a default cylinder with height 2.
             bond.transform.localScale = bondScale;
         }
 
+        // Attach (or add) a Bond component to the parentBond (BondGroup) and assign the sphere references and node indices.
+        Bond bondGroupComp = parentBond.GetComponent<Bond>();
+        if (bondGroupComp == null)
+            bondGroupComp = parentBond.AddComponent<Bond>();
+        bondGroupComp.sphereA = sphereA;
+        bondGroupComp.sphereB = sphereB;
+        bondGroupComp.nodeIndexA = nodeIndexA;
+        bondGroupComp.nodeIndexB = nodeIndexB;
+
         return parentBond;
     }
+
+
+
 
     void HighlightSphere(GameObject sphere)
     {

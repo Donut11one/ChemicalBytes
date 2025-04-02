@@ -496,7 +496,7 @@ MonoBehaviour:
   playerCamera: {fileID: 1360266729}
   sphereLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   deleteRange: 10
 --- !u!1 &69075285
 GameObject:

@@ -37,7 +37,12 @@ public class MolecularBuilder : MonoBehaviour
         visited.Add(currentAtom);
         currentSmiles += currentAtom.element;
 
-        List<AtomController> neighbors = adjacencyList[currentAtom].Where(neighbor => !visited.Contains(neighbor) && neighbor != parentAtom).ToList();
+        // Filter out any null references, and those already visited or equal to the parent.
+        List<AtomController> neighbors = adjacencyList[currentAtom]
+            .Where(neighbor => neighbor != null && !visited.Contains(neighbor) && neighbor != parentAtom)
+            .ToList();
+
+        // Sort the neighbors by number of connections (largest first)
         neighbors.Sort((a, b) => adjacencyList[b].Count - adjacencyList[a].Count);
 
         for (int i = 0; i < neighbors.Count; i++)
@@ -66,6 +71,7 @@ public class MolecularBuilder : MonoBehaviour
 
         return currentSmiles;
     }
+
 
     public Dictionary<AtomController, List<AtomController>> GetAdjacencyList()
     {
@@ -102,4 +108,13 @@ public class MolecularBuilder : MonoBehaviour
         string smiles = GenerateSMILES();
         Debug.Log("SMILES: " + smiles);
     }
+
+    public void RemoveSphere(GameObject sphere)
+    {
+        if (spheres.Contains(sphere))
+        {
+            spheres.Remove(sphere);
+        }
+    }
+
 }

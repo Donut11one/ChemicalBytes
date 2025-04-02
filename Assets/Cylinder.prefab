@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5610759724413787339}
   m_Layer: 0
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: Bond
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,3 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BondNumber: 0
+  sphereA: {fileID: 0}
+  sphereB: {fileID: 0}
+  nodeIndexA: 0
+  nodeIndexB: 0

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public enum BondType { Single, Double, Triple }
+public enum BondType { Single = 0, Double = 1, Triple=2}
 
 public class AtomController : MonoBehaviour
 {

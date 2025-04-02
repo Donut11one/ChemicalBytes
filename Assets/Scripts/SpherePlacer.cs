@@ -246,7 +246,8 @@ public class SpherePlacer : MonoBehaviour
             newSBC.fixedDistance = fixedDistance;
         }
         newSBC.OccupyBond(0); // Occupy the head node (node 0)
-        newSBC.bondCount = 1; // Set bond count to 1
+        newSBC.bondCount = (int)currentBondType+1;
+        newSBC.maxBonds = selectedCharge;
 
         // Create a visual bond between the parent and the new sphere
         GameObject newBond = CreateBond(selectedBaseSphere.transform.position, newSphere.transform.position);
@@ -271,14 +272,46 @@ public class SpherePlacer : MonoBehaviour
     /// </summary>
     GameObject CreateBond(Vector3 startPos, Vector3 endPos)
     {
-        Vector3 midPoint = (startPos + endPos) / 2;
-        GameObject bond = Instantiate(bondPrefab, midPoint, Quaternion.identity);
+        int totalbonds = (int)currentBondType;
         Vector3 direction = endPos - startPos;
-        bond.transform.up = direction.normalized;
-        Vector3 bondScale = bond.transform.localScale;
-        bondScale.y = direction.magnitude / 2f; // Assuming default cylinder height is 2 units.
-        bond.transform.localScale = bondScale;
-        return bond;
+        float bondLength = direction.magnitude;
+        Vector3 bondDirection = direction.normalized;
+
+        GameObject parentBond = new GameObject("BondGroup");
+        parentBond.transform.position = (startPos + endPos) / 2f;
+        parentBond.transform.up = bondDirection;
+
+        float offset = 0.3f;
+
+        Vector3 offsetDirection = Vector3.Cross(bondDirection, Vector3.up).normalized; // Perpendicular vector.
+        if (offsetDirection == Vector3.zero)
+        {
+            offsetDirection = Vector3.Cross(bondDirection, Vector3.forward).normalized; // Alternative perpendicular vector.
+        }
+
+        for (int i = 0; i < totalbonds+1; i++)
+        {
+            Vector3 bondPositionOffset = Vector3.zero;
+
+            if (totalbonds == 1)
+            {
+                bondPositionOffset = offsetDirection * (i == 0 ? -offset / 2f : offset / 2f);
+            }
+            else if (totalbonds == 2)
+            {
+                bondPositionOffset = offsetDirection * (i - 1) * offset;
+            }
+
+            GameObject bond = Instantiate(bondPrefab, parentBond.transform.position, Quaternion.identity, parentBond.transform);
+            bond.transform.localPosition = bondPositionOffset;
+            bond.transform.up = bondDirection;
+
+            Vector3 bondScale = bond.transform.localScale;
+            bondScale.y = bondLength / 2f;
+            bond.transform.localScale = bondScale;
+        }
+
+        return parentBond;
     }
 
     void HighlightSphere(GameObject sphere)

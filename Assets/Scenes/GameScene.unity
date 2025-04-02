@@ -3893,7 +3893,7 @@ GameObject:
   - component: {fileID: 1391040706}
   - component: {fileID: 1391040707}
   m_Layer: 0
-  m_Name: SphereManager
+  m_Name: SpherePlacer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

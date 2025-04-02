@@ -4,13 +4,16 @@ public class SphereBondController : MonoBehaviour
 {
 
     public int bondCount = 0;      // Total bonds currently connected.
-    public float fixedDistance = 2f;  // Distance from center to each node.
-    
+    public float fixedDistance = 2f;  // Distance from center to each node.  
     public int maxBonds;       // Maximum bonds allowed.
     // Predefined local positions for the 5 nodes.
     public Vector3[] bondPositions;
     // Tracks which nodes are already occupied.
     public bool[] bondOccupied;
+
+    /// <summary>
+    /// Awake is called when the script instance is being loaded. Initialize arrays for 5 nodes representing 5 different possible bond positions. 
+    /// </summary>
     void Awake()
     {
         // Initialize arrays for 5 nodes.
@@ -34,22 +37,35 @@ public class SphereBondController : MonoBehaviour
             bondOccupied[i] = false;
         }
     }
+
+    /// <summary>
+    /// Set the maximum number of bonds allowed for this atom.
+    /// </summary>
     public void setProperties(int bonds)
     {
         maxBonds = bonds;
     }
 
+    /// <summary>
+    /// Validate if there is a free bond node available based on maximum number of bonds.
+    /// </summary>
     public bool HasFreeBond()
     {
         return bondCount < maxBonds;
     }
 
+    /// <summary>
+    /// Validate if the bond node at the specified index is occupied.
+    /// </summary>
     public bool IsBondOccupied(int index)
     {
         if (index < 0 || index >= bondOccupied.Length) return true;
         return bondOccupied[index];
     }
 
+    /// <summary>
+    /// Occupy a bond node at the specified index.
+    /// </summary>
     public bool OccupyBond(int index)
     {
         if (index < 0 || index >= bondOccupied.Length) return false;
@@ -59,6 +75,9 @@ public class SphereBondController : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Iterate through all nodes and sets each to unoccupied.
+    /// </summary>
     public void ClearAllBonds()
     {
         for (int i = 0; i < bondOccupied.Length; i++)

@@ -26,7 +26,9 @@ public class SpherePlacer : MonoBehaviour
     public KeyCode clearCanvasKey = KeyCode.Delete;
 
     [Header("Audio")]
+    // Sound played when placing a bond/element.
     public AudioSource placeSphereSound;
+    // Sound played when clearing the canvas.
     public AudioSource clearCanvasSound;
 
     // Internal references
@@ -361,7 +363,9 @@ public class SpherePlacer : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// Highlights the given sphere object by changing its emission color to yellow.
+    /// </summary>
     void HighlightSphere(GameObject sphere)
     {
         UnhighlightLastSphere();
@@ -371,6 +375,9 @@ public class SpherePlacer : MonoBehaviour
         lastHighlightedSphere = sphere;
     }
 
+    /// <summary>
+    /// Unhighlights the last highlighted sphere object.
+    /// </summary>
     void UnhighlightLastSphere()
     {
         if (lastHighlightedSphere != null)
@@ -381,7 +388,9 @@ public class SpherePlacer : MonoBehaviour
             lastHighlightedSphere = null;
         }
     }
-
+    /// <summary>
+    /// Given an element symbol, returns a color representing the element.
+    /// </summary>
     private Color GetElementColor(string element)
     {
         switch (element)
@@ -398,12 +407,16 @@ public class SpherePlacer : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Clears canvas by destroying all Elements and bonds except the default element.
+    /// </summary>
     private void ClearAllGeneratedObjects()
     {
         // Destroy all spheres except the default sphere
         GameObject[] spheres = GameObject.FindGameObjectsWithTag("Sphere");
         foreach (GameObject sphere in spheres)
         {
+            // if the sphere is the default sphere, skip it.
             if (sphere.layer == LayerMask.NameToLayer("DefaultSphere"))
             {
                 startingSphere = sphere;
@@ -413,7 +426,8 @@ public class SpherePlacer : MonoBehaviour
             MolecularBuilder mb = Object.FindAnyObjectByType<MolecularBuilder>();
             if (mb != null)
             {
-                mb.RemoveSphere(sphere); // Implement this method if you want to clean up the list.
+                // This cleans up the MolecularBuilder objects removing the sphere from the list before destroying them.
+                mb.RemoveSphere(sphere); 
             }
 
             Destroy(sphere);
@@ -433,7 +447,7 @@ public class SpherePlacer : MonoBehaviour
             currentPreview = null;
         }
 
-        // Reset default sphere's state
+        // Reset default sphere's state so bonds can be formed again.
         if (startingSphere != null)
         {
             SphereBondController sbc = startingSphere.GetComponent<SphereBondController>();
@@ -447,10 +461,8 @@ public class SpherePlacer : MonoBehaviour
 
         if (clearCanvasSound != null)
         {
-            foreach (GameObject bond in bonds)
-            {
-                clearCanvasSound.Play();
-            }
+            clearCanvasSound.Play();
+            
         }
         else
         {

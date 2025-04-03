@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Sphere
+  - Bond
+  - Audio
   layers:
   - Default
   - TransparentFX
@@ -14,7 +16,7 @@ TagManager:
   - UI
   - 
   - Spheres
-  - 
+  - DefaultSphere
   - 
   - whatIsGround
   - 

@@ -17,4 +17,19 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void Selected()
+    {
+
+    }
+
+    public void Deselected()
+    {
+
+    }
+
+    public void HoverEnter()
+    {
+
+    }
 }

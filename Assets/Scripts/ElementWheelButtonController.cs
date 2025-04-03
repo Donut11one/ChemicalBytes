@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class ElementWheelButtonController : MonoBehaviour
 {
@@ -33,6 +34,9 @@ public class ElementWheelButtonController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Set the element and charge when the button is selected, updating the UI and assigning appropriate animation in unity.
+    /// </summary>
     public void Selected()
     {
         isSelected = true;
@@ -42,14 +46,19 @@ public class ElementWheelButtonController : MonoBehaviour
         ElementWheelController.Instance.SetElement(elementSymbol, elementCharge);
     }
 
+    /// <summary>
+    /// Deselect the button, clearing the UI and assign animation in unity.
+    /// </summary>
     public void Deselected()
     {
         isSelected = false;
         // Reset the text and sprite
         itemNameText.text = "";
-        //selectedItem.sprite = Resources.Load<Sprite>("None");
     }
 
+    /// <summary>
+    /// Hover enter event for the button, assign animation in unity.
+    /// </summary>
     public void HoverEnter()
     {
         // set the bool we named in animator "Hover" to true. Important bool must match name in animator
@@ -57,12 +66,13 @@ public class ElementWheelButtonController : MonoBehaviour
         itemNameText.text = "";
     }
 
+    /// <summary>
+    /// Hover exit event for the button, assign animation in unity.
+    /// </summary>
     public void HoverExit()
     {
         // set the bool we named in animator "Hover" to true. Important bool must match name in animator
         anim.SetBool("Hover", false);
         itemNameText.text = "";
     }
-
-
 }

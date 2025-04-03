@@ -22,6 +22,9 @@ public class ElementWheelController : MonoBehaviour
 
     private bool elementWheelSelected = false;
 
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
     private void Awake()
     {
         // a simple singleton reference so Spawner can easily grab our instance
@@ -62,7 +65,9 @@ public class ElementWheelController : MonoBehaviour
     }
 
 
-    // Update is called once per frame
+    /// <summary>
+    /// Called once per frame, checking for input to open/close the element wheel.
+    /// </summary>
     void Update()
     {
         // Only allow element selection if the game is not paused

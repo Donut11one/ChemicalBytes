@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class SpherePlacer : MonoBehaviour
 { 
@@ -18,12 +19,25 @@ public class SpherePlacer : MonoBehaviour
     public float activationRange = 5f;   // Maximum distance from a candidate node to the camera ray
     public float maxSpawnDistance = 10f; // Maximum allowed world-space distance from the camera for spawning
 
+    [Header("Keybinds")]
+    // Key used for placing a bond (default = E).
+    public KeyCode placeElementandBond = KeyCode.E;
+    // Key used for clearing all moleculars and bonds (default = Delete).
+    public KeyCode clearCanvasKey = KeyCode.Delete;
+
+    [Header("Audio")]
+    // Sound played when placing a bond/element.
+    public AudioSource placeSphereSound;
+    // Sound played when clearing the canvas.
+    public AudioSource clearCanvasSound;
+
     // Internal references
     private GameObject currentPreview;
     private GameObject selectedBaseSphere;
     // This will store the index of the selected free node on the parent.
     private int selectedNodeIndex = -1;
     private GameObject lastHighlightedSphere;
+    private GameObject startingSphere;
 
     void Start()
     {
@@ -39,8 +53,9 @@ public class SpherePlacer : MonoBehaviour
         if (existingSpheres.Length == 0)
         {
             Debug.Log("No spheres found. Spawning initial sphere at (0,0,0).");
-            GameObject startingSphere = Instantiate(spherePrefab, Vector3.zero, Quaternion.identity);
+            startingSphere = Instantiate(spherePrefab, Vector3.zero, Quaternion.identity);
             startingSphere.tag = "Sphere";
+            startingSphere.layer = LayerMask.NameToLayer("DefaultSphere");
 
             string defaultElem = ElementWheelController.Instance.CurrentElement;
             int defaultCharge = ElementWheelController.Instance.CurrentCharge;
@@ -75,7 +90,7 @@ public class SpherePlacer : MonoBehaviour
 
         if (!PauseMenu.isPaused)
         {
-            if (Input.GetKeyDown(KeyCode.E) && currentPreview != null)
+            if (Input.GetKeyDown(placeElementandBond) && currentPreview != null)
             {
                 PlaceSphere();
                 molecularBuilder.DisplaySMILES();
@@ -98,6 +113,11 @@ public class SpherePlacer : MonoBehaviour
                 currentBondType = (BondType)bondTypeIndex;
 
                 Debug.Log("Current Bond Type: " + currentBondType); // Optional debug log
+            }
+
+            if (Input.GetKeyDown(clearCanvasKey))
+            {
+                ClearAllGeneratedObjects();
             }
         }
 
@@ -250,7 +270,8 @@ public class SpherePlacer : MonoBehaviour
         newSBC.maxBonds = selectedCharge;
 
         // Create a visual bond between the parent and the new sphere
-        GameObject newBond = CreateBond(selectedBaseSphere.transform.position, newSphere.transform.position);
+        GameObject newBond = CreateBond(selectedBaseSphere, newSphere, selectedBaseSphere.transform.position, newSphere.transform.position, selectedNodeIndex, 0);
+        molecularBuilder.AddBond(newBond);
         molecularBuilder.AddSphere(newSphere); // Add to MolecularBuilder
         molecularBuilder.AddBond(newBond); // Add bond to MolecularBuilder
         AtomController parentAtom = selectedBaseSphere.GetComponent<AtomController>();
@@ -260,6 +281,14 @@ public class SpherePlacer : MonoBehaviour
             parentAtom.AddConnection(childAtom, currentBondType);
         }
 
+        if (placeSphereSound != null)
+        {
+            placeSphereSound.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Place Sphere sound is not assigned!");
+        }
         // Cleanup preview and unhighlight
         Destroy(currentPreview);
         currentPreview = null;
@@ -270,50 +299,73 @@ public class SpherePlacer : MonoBehaviour
     /// <summary>
     /// Creates a visual bond (cylinder) connecting two points.
     /// </summary>
-    GameObject CreateBond(Vector3 startPos, Vector3 endPos)
+    GameObject CreateBond(GameObject sphereA, GameObject sphereB, Vector3 startPos, Vector3 endPos, int nodeIndexA, int nodeIndexB)
     {
-        int totalbonds = (int)currentBondType;
+        int totalBonds = (int)currentBondType;
+        int numCylinders = totalBonds + 1;
+
         Vector3 direction = endPos - startPos;
         float bondLength = direction.magnitude;
         Vector3 bondDirection = direction.normalized;
 
+        // Create a parent GameObject to hold all the cylinders.
         GameObject parentBond = new GameObject("BondGroup");
         parentBond.transform.position = (startPos + endPos) / 2f;
         parentBond.transform.up = bondDirection;
 
+        // We'll use an offset for double/triple bonds so the cylinders don't overlap.
         float offset = 0.3f;
-
-        Vector3 offsetDirection = Vector3.Cross(bondDirection, Vector3.up).normalized; // Perpendicular vector.
+        Vector3 offsetDirection = Vector3.Cross(bondDirection, Vector3.up).normalized;
         if (offsetDirection == Vector3.zero)
         {
-            offsetDirection = Vector3.Cross(bondDirection, Vector3.forward).normalized; // Alternative perpendicular vector.
+            offsetDirection = Vector3.Cross(bondDirection, Vector3.forward).normalized;
         }
 
-        for (int i = 0; i < totalbonds+1; i++)
+        for (int i = 0; i < numCylinders; i++)
         {
             Vector3 bondPositionOffset = Vector3.zero;
-
-            if (totalbonds == 1)
+            if (numCylinders == 2)
             {
+                // For a double bond, place one cylinder slightly left and one right.
                 bondPositionOffset = offsetDirection * (i == 0 ? -offset / 2f : offset / 2f);
             }
-            else if (totalbonds == 2)
+            else if (numCylinders == 3)
             {
-                bondPositionOffset = offsetDirection * (i - 1) * offset;
+                // For a triple bond, place cylinders at -offset, 0, and offset.
+                if (i == 0)
+                    bondPositionOffset = offsetDirection * -offset;
+                else if (i == 1)
+                    bondPositionOffset = Vector3.zero;
+                else if (i == 2)
+                    bondPositionOffset = offsetDirection * offset;
             }
+            // For a single bond (numCylinders==1) bondPositionOffset remains zero.
 
             GameObject bond = Instantiate(bondPrefab, parentBond.transform.position, Quaternion.identity, parentBond.transform);
             bond.transform.localPosition = bondPositionOffset;
             bond.transform.up = bondDirection;
-
             Vector3 bondScale = bond.transform.localScale;
-            bondScale.y = bondLength / 2f;
+            bondScale.y = bondLength / 2f; // Assuming your bond prefab is a default cylinder with height 2.
             bond.transform.localScale = bondScale;
         }
+
+        // Attach (or add) a Bond component to the parentBond (BondGroup) and assign the sphere references and node indices.
+        Bond bondGroupComp = parentBond.GetComponent<Bond>();
+        if (bondGroupComp == null)
+            bondGroupComp = parentBond.AddComponent<Bond>();
+        bondGroupComp.sphereA = sphereA;
+        bondGroupComp.sphereB = sphereB;
+        bondGroupComp.nodeIndexA = nodeIndexA;
+        bondGroupComp.nodeIndexB = nodeIndexB;
 
         return parentBond;
     }
 
+
+
+    /// <summary>
+    /// Highlights the given sphere object by changing its emission color to yellow.
+    /// </summary>
     void HighlightSphere(GameObject sphere)
     {
         UnhighlightLastSphere();
@@ -323,6 +375,9 @@ public class SpherePlacer : MonoBehaviour
         lastHighlightedSphere = sphere;
     }
 
+    /// <summary>
+    /// Unhighlights the last highlighted sphere object.
+    /// </summary>
     void UnhighlightLastSphere()
     {
         if (lastHighlightedSphere != null)
@@ -333,7 +388,9 @@ public class SpherePlacer : MonoBehaviour
             lastHighlightedSphere = null;
         }
     }
-
+    /// <summary>
+    /// Given an element symbol, returns a color representing the element.
+    /// </summary>
     private Color GetElementColor(string element)
     {
         switch (element)
@@ -348,5 +405,72 @@ public class SpherePlacer : MonoBehaviour
             case "F": return new Color(0f, 1f, 1f);
             default: return Color.white;
         }
+    }
+
+    /// <summary>
+    /// Clears canvas by destroying all Elements and bonds except the default element.
+    /// </summary>
+    private void ClearAllGeneratedObjects()
+    {
+        // Destroy all spheres except the default sphere
+        GameObject[] spheres = GameObject.FindGameObjectsWithTag("Sphere");
+        foreach (GameObject sphere in spheres)
+        {
+            // if the sphere is the default sphere, skip it.
+            if (sphere.layer == LayerMask.NameToLayer("DefaultSphere"))
+            {
+                startingSphere = sphere;
+                continue;
+            }
+
+            MolecularBuilder mb = Object.FindAnyObjectByType<MolecularBuilder>();
+            if (mb != null)
+            {
+                // This cleans up the MolecularBuilder objects removing the sphere from the list before destroying them.
+                mb.RemoveSphere(sphere); 
+            }
+
+            Destroy(sphere);
+        }
+
+        // Destroy all bonds
+        GameObject[] bonds = GameObject.FindGameObjectsWithTag("Bond");
+        foreach (GameObject bond in bonds)
+        {
+            Destroy(bond);
+        }
+
+        // Reset preview
+        if (currentPreview != null)
+        {
+            Destroy(currentPreview);
+            currentPreview = null;
+        }
+
+        // Reset default sphere's state so bonds can be formed again.
+        if (startingSphere != null)
+        {
+            SphereBondController sbc = startingSphere.GetComponent<SphereBondController>();
+            if (sbc != null)
+            {
+                sbc.ClearAllBonds();
+            }
+            selectedBaseSphere = null;
+            selectedNodeIndex = -1;
+        }
+
+        if (clearCanvasSound != null)
+        {
+            clearCanvasSound.Play();
+            
+        }
+        else
+        {
+            Debug.LogWarning("Place Sphere sound is not assigned!");
+        }
+
+        UnhighlightLastSphere();
+
+        Debug.Log("Cleared all non-default spheres and reset default sphere.");
     }
 }

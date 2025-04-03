@@ -42,7 +42,6 @@ public class MolecularBuilder : MonoBehaviour
         visited.Add(currentAtom);
         currentSmiles += currentAtom.element;
 
-
         // Filter out any null references, and those already visited or equal to the parent.
         List<AtomController> neighbors = adjacencyList[currentAtom]
             .Where(neighbor => neighbor != null && !visited.Contains(neighbor) && neighbor != parentAtom)
@@ -50,7 +49,6 @@ public class MolecularBuilder : MonoBehaviour
 
         // Sort the neighbors by number of connections (largest first)
         neighbors.Sort((a, b) => adjacencyList[b].Count - adjacencyList[a].Count);
-        List<AtomController> neighbors = adjacencyList[currentAtom].Where(neighbor => !visited.Contains(neighbor) && neighbor != parentAtom).ToList();
 
         for (int i = 0; i < neighbors.Count; i++)
         {
@@ -92,7 +90,6 @@ public class MolecularBuilder : MonoBehaviour
 
         return currentSmiles;
     }
-
 
     public Dictionary<AtomController, List<AtomController>> GetAdjacencyList()
     {
@@ -157,6 +154,14 @@ public class MolecularBuilder : MonoBehaviour
         {
             Debug.LogError("Error during PubChem API call: " + ex.Message);
             moleculeNameText.text = "Molecule Does not Exist";
+        }
+    }
+
+    public void RemoveSphere(GameObject sphere)
+    {
+        if (spheres.Contains(sphere))
+        {
+            spheres.Remove(sphere);
         }
     }
 }
@@ -268,15 +273,8 @@ public static class StringExtensions
 {
     public static string Repeat(this string value, int count)
     {
-        return new System.Text.StringBuilder(value.Length * count).Insert(0, value, count).ToString();
+        return new System.Text.StringBuilder(value.Length * count)
+            .Insert(0, value, count)
+            .ToString();
     }
-
-    public void RemoveSphere(GameObject sphere)
-    {
-        if (spheres.Contains(sphere))
-        {
-            spheres.Remove(sphere);
-        }
-    }
-
 }

@@ -70,7 +70,9 @@ public class PauseMenu : MonoBehaviour
     /// </summary>
     public void GoToMainMenu()
     {
-        Time.timeScale = 1f;
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;      // Ensure the game time resumes.
+        isPaused = false;         // Reset the paused flag.
         SceneManager.LoadScene("MainMenuScene");
         EventSystem.current.SetSelectedGameObject(null);
 

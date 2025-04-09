@@ -9,10 +9,13 @@ public class SphereDeleter : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q)) // Press Q to delete
+        if (!PauseMenu.isPaused)
         {
-            DeleteSphere();
-            Debug.DrawRay(playerCamera.position, playerCamera.forward * deleteRange, Color.red);
+            if (Input.GetKeyDown(KeyCode.Q)) // Press Q to delete
+            {
+                DeleteSphere();
+                Debug.DrawRay(playerCamera.position, playerCamera.forward * deleteRange, Color.red);
+            }
         }
     }
 

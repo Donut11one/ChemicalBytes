@@ -83,33 +83,33 @@ public class ElementWheelController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha6)) SetElement("S", 2);
             if (Input.GetKeyDown(KeyCode.Alpha7)) SetElement("P", 3);
             if (Input.GetKeyDown(KeyCode.Alpha8)) SetElement("F", 1);
-        }
 
-        // Open menu on KeyDown
-        if (Input.GetKeyDown(KeyCode.Tab) && !elementWheelSelected)
-        {
-            elementWheelSelected = true;
-            anim.SetBool("OpenElementWheel", true);
+            // Open menu on KeyDown
+            if (Input.GetKeyDown(KeyCode.Tab) && !elementWheelSelected)
+            {
+                elementWheelSelected = true;
+                anim.SetBool("OpenElementWheel", true);
 
-            // Show and unlock the cursor
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+                // Show and unlock the cursor
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
 
-            // Disable camera rotation
-            if (playerCam != null) playerCam.enabled = false;
-        }
-        // Close menu on KeyUp
-        else if (Input.GetKeyUp(KeyCode.Tab) && elementWheelSelected)
-        {
-            elementWheelSelected = false;
-            anim.SetBool("OpenElementWheel", false);
+                // Disable camera rotation
+                if (playerCam != null) playerCam.enabled = false;
+            }
+            // Close menu on KeyUp
+            else if (Input.GetKeyUp(KeyCode.Tab) && elementWheelSelected)
+            {
+                elementWheelSelected = false;
+                anim.SetBool("OpenElementWheel", false);
 
-            // Hide and lock the cursor
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+                // Hide and lock the cursor
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
 
-            // Re-enable camera rotation
-            if (playerCam != null) playerCam.enabled = true;
+                // Re-enable camera rotation
+                if (playerCam != null) playerCam.enabled = true;
+            }
         }
     }
 }

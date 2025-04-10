@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
+using TMPro;
 
 public class SpherePlacer : MonoBehaviour
 { 
     public MolecularBuilder molecularBuilder;
     public BondType currentBondType = BondType.Single;
     public int bondTypeIndex = 0; // Index to cycle through bond types
-
+    public TMP_Text bondtypeMessage;
 
     [Header("Prefabs")]
     public GameObject spherePrefab;      // Sphere prefab (should have SphereBondController)
@@ -96,6 +97,7 @@ public class SpherePlacer : MonoBehaviour
                 molecularBuilder.DisplaySMILES();
             }
             // Mouse wheel input to change bond type
+            // Mouse wheel input to change bond type
             float scroll = Input.GetAxis("Mouse ScrollWheel");
             if (scroll != 0)
             {
@@ -108,16 +110,36 @@ public class SpherePlacer : MonoBehaviour
                     bondTypeIndex--;
                 }
 
-                // Cycle through bond types
+                // Clamp index to valid enum range
                 bondTypeIndex = Mathf.Clamp(bondTypeIndex, 0, System.Enum.GetValues(typeof(BondType)).Length - 1);
                 currentBondType = (BondType)bondTypeIndex;
 
-                Debug.Log("Current Bond Type: " + currentBondType); // Optional debug log
             }
+
 
             if (Input.GetKeyDown(clearCanvasKey))
             {
                 ClearAllGeneratedObjects();
+            }
+            // Update bond type text using switch statement
+            if (bondtypeMessage != null)
+            {
+                switch (currentBondType)
+                {
+                    case BondType.Single:
+                        bondtypeMessage.text = "Bond Type: Single (1x shared electrons)";
+                        break;
+                    case BondType.Double:
+                        bondtypeMessage.text = "Bond Type: Double (2x shared electrons)";
+                        break;
+                    case BondType.Triple:
+                        bondtypeMessage.text = "Bond Type: Triple (3x shared electrons)";
+                        break;
+                    // Add more cases if you have more bond types
+                    default:
+                        bondtypeMessage.text = "Bond Type: Unknown";
+                        break;
+                }
             }
         }
 

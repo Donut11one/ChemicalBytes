@@ -12,7 +12,7 @@ public class AtomController : MonoBehaviour
     public List<AtomController> connectedAtoms = new List<AtomController>();
     public List<BondType> bondTypes = new List<BondType>(); // Use BondType enum
 
-    private Renderer atomRenderer;
+        private Renderer atomRenderer;
 
     void Start()
     {

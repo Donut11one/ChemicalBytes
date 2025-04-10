@@ -5,7 +5,7 @@ public class MainMenu : MonoBehaviour
 {
     public void StartCreative()
     {
-        SceneManager.LoadSceneAsync(1);
+        SceneManager.LoadScene(1);
     }
     
     public void StartQuiz()

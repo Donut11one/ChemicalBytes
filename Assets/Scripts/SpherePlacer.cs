@@ -205,7 +205,7 @@ public class SpherePlacer : MonoBehaviour
             selectedBaseSphere = bestSphere;
             selectedNodeIndex = bestNodeIndex;
 
-            HighlightSphere(bestSphere); // you already have this method
+            HighlightSphere(bestSphere);
         }
         else
         {
@@ -215,7 +215,7 @@ public class SpherePlacer : MonoBehaviour
                 currentPreview = null;
             }
 
-            UnhighlightLastSphere(); // you already have this method
+            UnhighlightLastSphere();
 
             selectedBaseSphere = null;
             selectedNodeIndex = -1;

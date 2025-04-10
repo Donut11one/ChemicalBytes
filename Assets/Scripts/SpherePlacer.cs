@@ -169,19 +169,14 @@ public class SpherePlacer : MonoBehaviour
         foreach (GameObject sphere in spheres)
         {
             SphereBondController sbc = sphere.GetComponent<SphereBondController>();
-            if (sbc == null) continue;
-            if (!sbc.HasFreeBond()) continue;
+            if (sbc == null || !sbc.HasFreeBond()) continue;
 
-            // Iterate over all 5 nodes.
             for (int i = 0; i < sbc.bondPositions.Length; i++)
             {
-                if (sbc.IsBondOccupied(i))
-                    continue;
-                // Compute candidate node's world position.
+                if (sbc.IsBondOccupied(i)) continue;
+
                 Vector3 candidate = sphere.transform.TransformPoint(sbc.bondPositions[i]);
-                // Check if candidate is within the max spawn distance from the camera.
-                if (Vector3.Distance(playerCamera.position, candidate) > maxSpawnDistance)
-                    continue;
+                if (Vector3.Distance(playerCamera.position, candidate) > maxSpawnDistance) continue;
 
                 float dist = DistancePointToRay(candidate, ray);
                 if (dist < bestDist && dist <= activationRange)
@@ -199,28 +194,34 @@ public class SpherePlacer : MonoBehaviour
             if (currentPreview == null)
             {
                 currentPreview = Instantiate(previewPrefab, bestCandidatePos, Quaternion.identity);
-                // Disable the preview's collider so it doesn't interfere with deletion raycasts.
                 Collider col = currentPreview.GetComponent<Collider>();
-                if (col != null)
-                    col.enabled = false;
+                if (col != null) col.enabled = false;
             }
             else
             {
                 currentPreview.transform.position = bestCandidatePos;
             }
+
             selectedBaseSphere = bestSphere;
             selectedNodeIndex = bestNodeIndex;
-            HighlightSphere(bestSphere);
+
+            HighlightSphere(bestSphere); // you already have this method
         }
         else
         {
             if (currentPreview != null)
+            {
                 Destroy(currentPreview);
-            UnhighlightLastSphere();
+                currentPreview = null;
+            }
+
+            UnhighlightLastSphere(); // you already have this method
+
             selectedBaseSphere = null;
             selectedNodeIndex = -1;
         }
     }
+
 
     /// <summary>
     /// Places a new sphere attached to the selected parent's free node.
@@ -393,9 +394,14 @@ public class SpherePlacer : MonoBehaviour
         UnhighlightLastSphere();
         Renderer rend = sphere.GetComponent<Renderer>();
         if (rend != null)
-            rend.material.SetColor("_EmissionColor", Color.yellow);
-        lastHighlightedSphere = sphere;
+        {
+            Material mat = rend.material;
+            mat.EnableKeyword("_EMISSION"); // 👈 this is required!
+            mat.SetColor("_EmissionColor", Color.yellow);
+            lastHighlightedSphere = sphere;
+        }
     }
+
 
     /// <summary>
     /// Unhighlights the last highlighted sphere object.
@@ -406,10 +412,15 @@ public class SpherePlacer : MonoBehaviour
         {
             Renderer rend = lastHighlightedSphere.GetComponent<Renderer>();
             if (rend != null)
-                rend.material.SetColor("_EmissionColor", Color.black);
+            {
+                Material mat = rend.material;
+                mat.SetColor("_EmissionColor", Color.black);
+                mat.DisableKeyword("_EMISSION"); // 👈 optional for cleanup
+            }
             lastHighlightedSphere = null;
         }
     }
+
     /// <summary>
     /// Given an element symbol, returns a color representing the element.
     /// </summary>

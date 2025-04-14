@@ -5,7 +5,7 @@ public class MainMenu : MonoBehaviour
 {
     public void StartCreative()
     {
-        SceneManager.LoadSceneAsync(1);
+        SceneManager.LoadScene(1);
     }
     
     public void StartQuiz()
@@ -16,5 +16,20 @@ public class MainMenu : MonoBehaviour
     public void QuitApplication()
     {
         Application.Quit();
+    }
+
+    public void Selected()
+    {
+
+    }
+
+    public void Deselected()
+    {
+
+    }
+
+    public void HoverEnter()
+    {
+
     }
 }

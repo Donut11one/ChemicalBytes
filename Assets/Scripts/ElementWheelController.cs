@@ -12,7 +12,7 @@ public class ElementWheelController : MonoBehaviour
 
     // These will be used by the spawner script to determine which element to spawn
     public string CurrentElement { get; private set; } = "C"; // Default element is Carbon
-    public int CurrentCharge { get; private set; } = 0; // Default charge is 0
+    public int CurrentCharge { get; private set; } = 4; // Default charge is 4
 
     public Animator anim;
     public Image selectedItem;
@@ -22,6 +22,9 @@ public class ElementWheelController : MonoBehaviour
 
     private bool elementWheelSelected = false;
 
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
     private void Awake()
     {
         // a simple singleton reference so Spawner can easily grab our instance
@@ -35,7 +38,7 @@ public class ElementWheelController : MonoBehaviour
     {
         CurrentElement = elementSymbol;
         CurrentCharge = charge;
-        Debug.Log("SetElement: " + CurrentElement + " (charge " + charge + ")");
+        Debug.Log("SetElement: " + CurrentElement + " (valency " + CurrentCharge + ")");
 
         // This is purely for visual feedback for the keyboard input
         selectedItem.sprite = GetElementSprite(elementSymbol);
@@ -62,7 +65,9 @@ public class ElementWheelController : MonoBehaviour
     }
 
 
-    // Update is called once per frame
+    /// <summary>
+    /// Called once per frame, checking for input to open/close the element wheel.
+    /// </summary>
     void Update()
     {
         // Only allow element selection if the game is not paused
@@ -70,41 +75,41 @@ public class ElementWheelController : MonoBehaviour
         {
 
             // Numerical key equip your element
-            if (Input.GetKeyDown(KeyCode.Alpha1)) SetElement("C", 0);
-            if (Input.GetKeyDown(KeyCode.Alpha2)) SetElement("O", 0);
-            if (Input.GetKeyDown(KeyCode.Alpha3)) SetElement("N", 0);
+            if (Input.GetKeyDown(KeyCode.Alpha1)) SetElement("C", 4);
+            if (Input.GetKeyDown(KeyCode.Alpha2)) SetElement("O", 2);
+            if (Input.GetKeyDown(KeyCode.Alpha3)) SetElement("N", 3);
             if (Input.GetKeyDown(KeyCode.Alpha4)) SetElement("Na", 1);
-            if (Input.GetKeyDown(KeyCode.Alpha5)) SetElement("Cl", -1);
-            if (Input.GetKeyDown(KeyCode.Alpha6)) SetElement("S", 0);
-            if (Input.GetKeyDown(KeyCode.Alpha7)) SetElement("P", 0);
-            if (Input.GetKeyDown(KeyCode.Alpha8)) SetElement("F", 0);
-        }
+            if (Input.GetKeyDown(KeyCode.Alpha5)) SetElement("Cl", 1);
+            if (Input.GetKeyDown(KeyCode.Alpha6)) SetElement("S", 2);
+            if (Input.GetKeyDown(KeyCode.Alpha7)) SetElement("P", 3);
+            if (Input.GetKeyDown(KeyCode.Alpha8)) SetElement("F", 1);
 
-        // Open menu on KeyDown
-        if (Input.GetKeyDown(KeyCode.Tab) && !elementWheelSelected)
-        {
-            elementWheelSelected = true;
-            anim.SetBool("OpenElementWheel", true);
+            // Open menu on KeyDown
+            if (Input.GetKeyDown(KeyCode.Tab) && !elementWheelSelected)
+            {
+                elementWheelSelected = true;
+                anim.SetBool("OpenElementWheel", true);
 
-            // Show and unlock the cursor
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+                // Show and unlock the cursor
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
 
-            // Disable camera rotation
-            if (playerCam != null) playerCam.enabled = false;
-        }
-        // Close menu on KeyUp
-        else if (Input.GetKeyUp(KeyCode.Tab) && elementWheelSelected)
-        {
-            elementWheelSelected = false;
-            anim.SetBool("OpenElementWheel", false);
+                // Disable camera rotation
+                if (playerCam != null) playerCam.enabled = false;
+            }
+            // Close menu on KeyUp
+            else if (Input.GetKeyUp(KeyCode.Tab) && elementWheelSelected)
+            {
+                elementWheelSelected = false;
+                anim.SetBool("OpenElementWheel", false);
 
-            // Hide and lock the cursor
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+                // Hide and lock the cursor
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
 
-            // Re-enable camera rotation
-            if (playerCam != null) playerCam.enabled = true;
+                // Re-enable camera rotation
+                if (playerCam != null) playerCam.enabled = true;
+            }
         }
     }
 }
